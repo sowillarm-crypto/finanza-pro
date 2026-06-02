@@ -756,17 +756,17 @@ body{background:var(--bg);color:var(--t1);
         <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><line x1="12" y1="8" x2="12" y2="16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
         <div class="tab-l">Registrar</div>
       </div>
-      <div class="tab" data-p="ingresos">
-        <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><polyline points="3 17 9 11 13 15 21 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="15 7 21 7 21 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="tab-l">Ingresos</div>
+      <div class="tab" data-p="historial">
+        <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><rect x="9" y="3" width="6" height="4" rx="1.5" stroke="currentColor" stroke-width="1.7"/><line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="9" y1="16" x2="13" y2="16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <div class="tab-l">Historial</div>
       </div>
       <div class="tab" data-p="egresos">
         <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><polyline points="3 7 9 13 13 9 21 17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="15 17 21 17 21 11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <div class="tab-l">Egresos</div>
       </div>
-      <div class="tab" data-p="historial">
-        <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><rect x="9" y="3" width="6" height="4" rx="1.5" stroke="currentColor" stroke-width="1.7"/><line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="9" y1="16" x2="13" y2="16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-        <div class="tab-l">Historial</div>
+      <div class="tab" data-p="estadocuenta">
+        <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="8" y1="17" x2="12" y2="17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <div class="tab-l">PDF</div>
       </div>
     </nav>
   </div><!-- /main -->
@@ -1521,7 +1521,7 @@ function generarPDF(){
   const refDoc=`EC-${S.ano}-${String(MESES.indexOf(m)+1).padStart(2,'0')}`;
 
   // ── CABECERA OSCURA ──
-  doc.setFillColor(7,7,15);doc.rect(0,0,W,52,'F');
+  doc.setFillColor(7,7,20);doc.rect(0,0,W,52,'F');
   // Barra acento indigo
   doc.setFillColor(99,102,241);doc.rect(0,0,W,2.5,'F');
   // Logo cuadro
@@ -1548,16 +1548,16 @@ function generarPDF(){
   const bW=CW/3;
   [[' INGRESOS',pf(ing),[74,222,128]],[' EGRESOS',pf(gst),[248,113,113]],['  BALANCE',pf(bal),bal>=0?[74,222,128]:[248,113,113]]].forEach(([lbl,val,col],i)=>{
     const bx=PL+i*bW;
-    doc.setFillColor(15,15,30);doc.rect(bx,y,bW,22,'F');
+    doc.setFillColor(245,245,252);doc.rect(bx,y,bW,22,'F');
     if(i<2){doc.setDrawColor(40,40,80);doc.setLineWidth(.3);doc.line(bx+bW,y+3,bx+bW,y+19);}
-    doc.setFontSize(7);doc.setFont('helvetica','bold');doc.setTextColor(80,80,130);doc.text(lbl,bx+4,y+7);
+    doc.setFontSize(7);doc.setFont('helvetica','bold');doc.setTextColor(100,100,130);doc.text(lbl,bx+4,y+7);
     doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(...col);doc.text(val,bx+4,y+17);
   });
   y+=22;
 
   // ── Mini stats ──
-  doc.setFillColor(12,12,25);doc.rect(PL,y,CW,10,'F');
-  doc.setFontSize(7.5);doc.setFont('helvetica','normal');doc.setTextColor(80,80,120);
+  doc.setFillColor(235,235,248);doc.rect(PL,y,CW,10,'F');
+  doc.setFontSize(7.5);doc.setFont('helvetica','normal');doc.setTextColor(70,70,110);
   doc.text(`Presupuesto del mes: ${pf(pr)}`,PL+4,y+6.5);
   const pctEjec=pr>0?Math.round(Math.min(gst,pr)/pr*100):0;
   doc.text(`Ejecución: ${pctEjec}%`,PL+50,y+6.5);
@@ -1583,14 +1583,14 @@ function generarPDF(){
       head:[['Código','Fecha','Fuente / Concepto','Descripción','Banco','Usuario','Monto']],
       body:ingTx.map(t=>[t.codigo||codigoLeg(t),t.fecha||'',t.concepto,t.desc||'—',t.banco||'—',t.user||'—',pf(t.monto)]),
       theme:'plain',
-      styles:{fontSize:8,cellPadding:{top:2.5,bottom:2.5,left:2,right:2},textColor:[180,185,220],lineColor:[30,30,60],lineWidth:.2,font:'helvetica'},
-      headStyles:{fillColor:[17,17,40],textColor:[99,102,160],fontSize:7,fontStyle:'bold',cellPadding:{top:3,bottom:3,left:2,right:2}},
-      alternateRowStyles:{fillColor:[12,12,28]},
-      bodyStyles:{fillColor:[9,9,20]},
-      columnStyles:{0:{cellWidth:28,textColor:[129,140,248],fontSize:7.5},1:{cellWidth:20},2:{cellWidth:'auto',fontStyle:'bold'},3:{cellWidth:32},4:{cellWidth:18},5:{cellWidth:16},6:{cellWidth:24,halign:'right',fontStyle:'bold',textColor:[74,222,128]}},
+      styles:{fontSize:8,cellPadding:{top:2.8,bottom:2.8,left:3,right:3},textColor:[30,30,50],lineColor:[210,210,225],lineWidth:.3,font:'helvetica'},
+      headStyles:{fillColor:[99,102,241],textColor:[255,255,255],fontSize:7.5,fontStyle:'bold',cellPadding:{top:3.5,bottom:3.5,left:3,right:3}},
+      alternateRowStyles:{fillColor:[248,248,252]},
+      bodyStyles:{fillColor:[255,255,255]},
+      columnStyles:{0:{cellWidth:28,textColor:[99,102,241],fontSize:7.5,fontStyle:'bold'},1:{cellWidth:20},2:{cellWidth:'auto',fontStyle:'bold',textColor:[20,20,40]},3:{cellWidth:32},4:{cellWidth:18},5:{cellWidth:16},6:{cellWidth:26,halign:'right',fontStyle:'bold',textColor:[22,163,74]}},
       margin:{left:PL,right:PR},
       foot:[['','','','','','TOTAL',pf(ing)]],
-      footStyles:{fillColor:[17,17,40],textColor:[74,222,128],fontStyle:'bold',fontSize:8.5,halign:'right'},
+      footStyles:{fillColor:[240,253,244],textColor:[22,163,74],fontStyle:'bold',fontSize:9,halign:'right'},
     });
     y=doc.lastAutoTable.finalY+6;
   }
@@ -1604,14 +1604,14 @@ function generarPDF(){
       head:[['Código','Fecha','Categoría','Descripción','Banco','Usuario','Monto']],
       body:gstTx.map(t=>[t.codigo||codigoLeg(t),t.fecha||'',t.concepto,t.desc||'—',t.banco||'—',t.user||'—',pf(t.monto)]),
       theme:'plain',
-      styles:{fontSize:8,cellPadding:{top:2.5,bottom:2.5,left:2,right:2},textColor:[180,185,220],lineColor:[30,30,60],lineWidth:.2},
-      headStyles:{fillColor:[17,17,40],textColor:[99,102,160],fontSize:7,fontStyle:'bold',cellPadding:{top:3,bottom:3,left:2,right:2}},
-      alternateRowStyles:{fillColor:[12,12,28]},
-      bodyStyles:{fillColor:[9,9,20]},
-      columnStyles:{0:{cellWidth:28,textColor:[129,140,248],fontSize:7.5},1:{cellWidth:20},2:{cellWidth:'auto',fontStyle:'bold'},3:{cellWidth:32},4:{cellWidth:18},5:{cellWidth:16},6:{cellWidth:24,halign:'right',fontStyle:'bold',textColor:[248,113,113]}},
+      styles:{fontSize:8,cellPadding:{top:2.8,bottom:2.8,left:3,right:3},textColor:[30,30,50],lineColor:[210,210,225],lineWidth:.3,font:'helvetica'},
+      headStyles:{fillColor:[220,38,38],textColor:[255,255,255],fontSize:7.5,fontStyle:'bold',cellPadding:{top:3.5,bottom:3.5,left:3,right:3}},
+      alternateRowStyles:{fillColor:[255,248,248]},
+      bodyStyles:{fillColor:[255,255,255]},
+      columnStyles:{0:{cellWidth:28,textColor:[99,102,241],fontSize:7.5,fontStyle:'bold'},1:{cellWidth:20},2:{cellWidth:'auto',fontStyle:'bold',textColor:[20,20,40]},3:{cellWidth:32},4:{cellWidth:18},5:{cellWidth:16},6:{cellWidth:26,halign:'right',fontStyle:'bold',textColor:[185,28,28]}},
       margin:{left:PL,right:PR},
       foot:[['','','','','','TOTAL',pf(gst)]],
-      footStyles:{fillColor:[17,17,40],textColor:[248,113,113],fontStyle:'bold',fontSize:8.5,halign:'right'},
+      footStyles:{fillColor:[255,241,241],textColor:[185,28,28],fontStyle:'bold',fontSize:9,halign:'right'},
     });
     y=doc.lastAutoTable.finalY+6;
   }
@@ -1627,11 +1627,11 @@ function generarPDF(){
       head:[['Categoría','Presupuesto','Ejecutado','Saldo','Ejecución']],
       body:presCats.map(c=>{const b=S.pres[c]?.[m]||0,e=cgM[c]||0,sal=b-e,pp=b>0?Math.round(e/b*100):0;return[c,b>0?pf(b):'—',e>0?pf(e):'—',(sal<0?'-':'')+pf(Math.abs(sal)),pp+'%'];}),
       theme:'plain',
-      styles:{fontSize:8,cellPadding:{top:2.5,bottom:2.5,left:2,right:2},textColor:[180,185,220],lineColor:[30,30,60],lineWidth:.2},
-      headStyles:{fillColor:[17,17,40],textColor:[99,102,160],fontSize:7,fontStyle:'bold',cellPadding:{top:3,bottom:3,left:2,right:2}},
-      alternateRowStyles:{fillColor:[12,12,28]},
-      bodyStyles:{fillColor:[9,9,20]},
-      columnStyles:{0:{fontStyle:'bold'},1:{halign:'right',textColor:[251,191,36]},2:{halign:'right',textColor:[248,113,113]},3:{halign:'right',textColor:[74,222,128]},4:{halign:'right',textColor:[100,100,160]}},
+      styles:{fontSize:8,cellPadding:{top:2.8,bottom:2.8,left:3,right:3},textColor:[30,30,50],lineColor:[210,210,225],lineWidth:.3},
+      headStyles:{fillColor:[79,70,229],textColor:[255,255,255],fontSize:7.5,fontStyle:'bold',cellPadding:{top:3.5,bottom:3.5,left:3,right:3}},
+      alternateRowStyles:{fillColor:[250,250,255]},
+      bodyStyles:{fillColor:[255,255,255]},
+      columnStyles:{0:{fontStyle:'bold',textColor:[20,20,40]},1:{halign:'right',textColor:[146,64,14],fontStyle:'bold'},2:{halign:'right',textColor:[185,28,28],fontStyle:'bold'},3:{halign:'right',textColor:[22,101,52],fontStyle:'bold'},4:{halign:'right',textColor:[79,70,229]}},
       margin:{left:PL,right:PR},
     });
     y=doc.lastAutoTable.finalY+8;
@@ -1639,17 +1639,17 @@ function generarPDF(){
 
   // ── CAJA TOTALES FINAL ──
   const ty=Math.min(y,248);
-  doc.setFillColor(15,15,35);doc.rect(W-PR-70,ty,70,32,'F');
+  doc.setFillColor(245,245,252);doc.rect(W-PR-70,ty,70,32,'F');
   doc.setDrawColor(99,102,241);doc.setLineWidth(.5);doc.rect(W-PR-70,ty,70,32,'S');
   doc.setLineWidth(.2);
   [['Total ingresos',pf(ing),[74,222,128]],['Total egresos',pf(gst),[248,113,113]],['Presupuesto',pf(pr),[251,191,36]]].forEach(([l,v,c],i)=>{
     const ly=ty+7+i*7;
-    doc.setFontSize(7.5);doc.setFont('helvetica','normal');doc.setTextColor(80,80,130);doc.text(l,W-PR-66,ly);
+    doc.setFontSize(7.5);doc.setFont('helvetica','normal');doc.setTextColor(80,80,120);doc.text(l,W-PR-66,ly);
     doc.setFont('helvetica','bold');doc.setTextColor(...c);doc.text(v,W-PR-2,ly,{align:'right'});
     if(i<2){doc.setDrawColor(30,30,60);doc.line(W-PR-66,ly+2.5,W-PR-2,ly+2.5);}
   });
   doc.setDrawColor(99,102,241);doc.setLineWidth(.4);doc.line(W-PR-66,ty+28,W-PR-2,ty+28);
-  doc.setFontSize(9);doc.setFont('helvetica','bold');doc.setTextColor(200,210,255);
+  doc.setFontSize(9);doc.setFont('helvetica','bold');doc.setTextColor(50,50,90);
   doc.text('Ahorro neto',W-PR-66,ty+31.5);
   doc.setTextColor(bal>=0?74:248,bal>=0?222:113,bal>=0?128:113);doc.text(pf(bal),W-PR-2,ty+31.5,{align:'right'});
 
