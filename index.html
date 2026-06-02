@@ -434,6 +434,9 @@ body{background:var(--bg);color:var(--t1);
   .mini-stats{justify-content:flex-start}
   .tbl-wrap{display:none}
   .mob-grp{display:block}
+  /* Fecha — evitar corte del año en móvil */
+  .fi input[type=date]{font-size:12px;padding:10px 8px;min-width:0;width:100%}
+  input[type=date]{-webkit-appearance:none;appearance:none}
 }
 @media(min-width:641px){
   .mob-grp{display:none}
@@ -878,7 +881,11 @@ function toast(msg,type='ok'){
 // ── Modal ──
 function showMod(t,s,cb){document.getElementById('mT').textContent=t;document.getElementById('mS').textContent=s;mCb=cb;document.getElementById('mov').classList.add('open')}
 function closeMod(){document.getElementById('mov').classList.remove('open');mCb=null}
-document.getElementById('mOk').onclick=()=>{if(mCb)mCb();closeMod()};
+document.getElementById('mOk').onclick=()=>{
+  const cb=mCb;
+  closeMod();
+  setTimeout(()=>{if(cb)cb();},180);
+};
 document.getElementById('mov').addEventListener('click',e=>{if(e.target===e.currentTarget)closeMod()});
 
 // ── Auth ──
@@ -1637,21 +1644,29 @@ function generarPDF(){
     y=doc.lastAutoTable.finalY+8;
   }
 
-  // ── CAJA TOTALES FINAL ──
-  const ty=Math.min(y,248);
-  doc.setFillColor(245,245,252);doc.rect(W-PR-70,ty,70,32,'F');
-  doc.setDrawColor(99,102,241);doc.setLineWidth(.5);doc.rect(W-PR-70,ty,70,32,'S');
-  doc.setLineWidth(.2);
-  [['Total ingresos',pf(ing),[74,222,128]],['Total egresos',pf(gst),[248,113,113]],['Presupuesto',pf(pr),[251,191,36]]].forEach(([l,v,c],i)=>{
-    const ly=ty+7+i*7;
-    doc.setFontSize(7.5);doc.setFont('helvetica','normal');doc.setTextColor(80,80,120);doc.text(l,W-PR-66,ly);
-    doc.setFont('helvetica','bold');doc.setTextColor(...c);doc.text(v,W-PR-2,ly,{align:'right'});
-    if(i<2){doc.setDrawColor(30,30,60);doc.line(W-PR-66,ly+2.5,W-PR-2,ly+2.5);}
+  // ── CAJA TOTALES FINAL — Propuesta A: footer índigo ──
+  const boxW=82,boxH=44;
+  const ty=Math.min(y+2,250);
+  const bx=W-PR-boxW;
+  // Fondo superior (datos)
+  doc.setFillColor(248,248,252);doc.rect(bx,ty,boxW,boxH-14,'F');
+  doc.setDrawColor(99,102,241);doc.setLineWidth(.5);doc.rect(bx,ty,boxW,boxH,'S');
+  // Filas de datos
+  [['Total ingresos',pf(ing),[22,163,74]],['Total egresos',pf(gst),[185,28,28]],['Presupuesto',pf(pr),[146,64,14]]].forEach(([l,v,c],i)=>{
+    const ly=ty+6+i*7;
+    doc.setFontSize(7);doc.setFont('helvetica','normal');doc.setTextColor(100,100,130);
+    doc.text(l,bx+4,ly);
+    doc.setFont('helvetica','bold');doc.setTextColor(...c);
+    doc.text(v,W-PR-2,ly,{align:'right'});
+    if(i<2){doc.setDrawColor(210,210,225);doc.setLineWidth(.2);doc.line(bx+4,ly+2.5,W-PR-2,ly+2.5);}
   });
-  doc.setDrawColor(99,102,241);doc.setLineWidth(.4);doc.line(W-PR-66,ty+28,W-PR-2,ty+28);
-  doc.setFontSize(9);doc.setFont('helvetica','bold');doc.setTextColor(50,50,90);
-  doc.text('Ahorro neto',W-PR-66,ty+31.5);
-  doc.setTextColor(bal>=0?74:248,bal>=0?222:113,bal>=0?128:113);doc.text(pf(bal),W-PR-2,ty+31.5,{align:'right'});
+  // Footer índigo — Ahorro neto
+  doc.setFillColor(99,102,241);doc.rect(bx,ty+boxH-14,boxW,14,'F');
+  doc.setFontSize(7.5);doc.setFont('helvetica','bold');doc.setTextColor(200,205,255);
+  doc.text('AHORRO NETO',bx+4,ty+boxH-7.5);
+  doc.setFontSize(12);doc.setFont('helvetica','bold');
+  doc.setTextColor(bal>=0?200:255,bal>=0?255:160,bal>=0?200:160);
+  doc.text(pf(bal),W-PR-2,ty+boxH-5.5,{align:'right'});
 
   // ── FOOTER ──
   const H=297;
@@ -1680,36 +1695,60 @@ function exportCSV(){
 }
 
 function paso1Borrar(){
+  // Paso 0: exportar CSV automáticamente antes de mostrar confirmación
   showMod(
-    '⚠️ Paso 1 de 3 — ¿Estás seguro?',
-    `Esto eliminará los ${S.tx.length} registros permanentemente. Esta acción NO se puede deshacer.`,
-    ()=>paso2Borrar()
+    '📥 Paso 0 de 3 — Exporta tus datos primero',
+    `Antes de borrar los ${S.tx.length} registros, te recomendamos descargar una copia de seguridad en CSV. ¿Descargar ahora y continuar?`,
+    ()=>{
+      exportCSV();
+      setTimeout(()=>paso2Borrar(),400);
+    }
   );
+  // Cambiar texto del botón confirmar
+  setTimeout(()=>{
+    const btn=document.getElementById('mOk');
+    if(btn){btn.style.background='';btn.style.color='';btn.textContent='Descargar y continuar';}
+  },50);
 }
 function paso2Borrar(){
   showMod(
-    '⚠️ Paso 2 de 3 — Confirma tu intención',
-    'Se eliminarán TODOS los movimientos de ingresos, egresos y presupuesto. ¿Continuar?',
+    '⚠️ Paso 1 de 3 — ¿Estás seguro?',
+    `Esto eliminará los ${S.tx.length} registros permanentemente de todos los años y meses. Esta acción NO se puede deshacer.`,
     ()=>paso3Borrar()
   );
+  setTimeout(()=>{
+    const btn=document.getElementById('mOk');
+    if(btn){btn.style.background='';btn.style.color='';btn.textContent='Confirmar';}
+  },50);
 }
+function paso2BorrarOLD(){} // reemplazado arriba
 function paso3Borrar(){
   showMod(
+    '⚠️ Paso 2 de 3 — Confirma tu intención',
+    'Se eliminarán TODOS los movimientos de ingresos y egresos de todos los años y meses. ¿Continuar?',
+    ()=>paso4Borrar()
+  );
+  setTimeout(()=>{
+    const btn=document.getElementById('mOk');
+    if(btn){btn.style.background='';btn.textContent='Continuar';}
+  },50);
+}
+function paso4Borrar(){
+  showMod(
     '🔴 Paso 3 de 3 — ÚLTIMA CONFIRMACIÓN',
-    'Esta es tu última oportunidad de cancelar. Una vez confirmado, los datos NO se pueden recuperar.',
+    'Esta es tu última oportunidad de cancelar. Se borrarán TODOS los registros permanentemente. Los datos ya fueron exportados al CSV.',
     ()=>{
       setSS('syncing');
       const batch=db.batch();
       S.tx.forEach(t=>batch.delete(db.collection('transactions').doc(t._id)));
       batch.commit()
-        .then(()=>toast('Todos los datos han sido eliminados'))
+        .then(()=>toast('✓ Todos los registros han sido eliminados'))
         .catch(()=>{toast('Error al borrar','err');setSS('offline')});
     }
   );
-  // Cambiar color del botón confirmar en el último paso
   setTimeout(()=>{
     const btn=document.getElementById('mOk');
-    if(btn){btn.style.background='#DC2626';btn.textContent='SÍ, BORRAR TODO';}
+    if(btn){btn.style.background='#DC2626';btn.style.color='#fff';btn.textContent='SÍ, BORRAR TODO';}
   },50);
 }
 function confirmBorrar(){paso1Borrar();}
