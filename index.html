@@ -9,6 +9,7 @@
 <meta name="theme-color" content="#07070F">
 <title>Finanza PRO</title>
 <link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -550,6 +551,7 @@ body{background:var(--bg);color:var(--t1);
         <div class="mob-sync-dot" id="mobDot"></div>
       </div>
       <div class="mob-right">
+        <select id="anoSelMob" onchange="setAno(this.value)" style="background:rgba(255,255,255,.06);border:1px solid var(--brm);border-radius:8px;padding:4px 6px;font-size:10.5px;color:var(--t2);font-family:var(--ff);outline:none;max-width:54px"></select>
         <select class="mob-msel" id="mselMob" onchange="setMes(this.value)"></select>
         <div class="mob-av" id="mobUav"></div>
         <button class="mob-out-btn" onclick="logout()">Salir</button>
@@ -563,6 +565,7 @@ body{background:var(--bg);color:var(--t1);
         <div class="tb-title" id="PT">Resumen financiero</div>
       </div>
       <div class="tb-right">
+        <select id="anoSel" onchange="setAno(this.value)" style="background:rgba(0,0,0,.3);backdrop-filter:blur(12px);border:1px solid var(--br);border-radius:var(--r10);padding:6px 10px;font-size:12px;font-weight:600;color:var(--t2);font-family:var(--ff);outline:none;cursor:pointer"></select>
         <div class="month-seg" id="mseg"></div>
         <button class="add-btn" onclick="goTo('registro')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
@@ -581,7 +584,7 @@ body{background:var(--bg);color:var(--t1);
         <div class="cr">
           <div class="card">
             <div class="chd">
-              <span class="ct">Flujo anual 2026</span>
+              <span class="ct" id="flujoTitle">Flujo anual</span>
               <div style="display:flex;gap:10px;font-size:9.5px;color:var(--t3)">
                 <span><span style="display:inline-block;width:7px;height:7px;border-radius:2px;background:var(--acc);margin-right:4px;vertical-align:middle"></span>Ingresos</span>
                 <span><span style="display:inline-block;width:7px;height:7px;border-radius:2px;background:var(--red);opacity:.6;margin-right:4px;vertical-align:middle"></span>Gastos</span>
@@ -732,7 +735,7 @@ body{background:var(--bg);color:var(--t1);
           <div class="cfg-section">
             <div class="cfg-title">Datos</div>
             <div class="cfg-row"><div><div class="cfg-lbl">Exportar datos</div><div class="cfg-desc">Descarga todos tus registros en CSV</div></div><button class="btn-sec" onclick="exportCSV()">Exportar CSV</button></div>
-            <div class="cfg-row"><div><div class="cfg-lbl" style="color:var(--red)">Borrar todos los datos</div><div class="cfg-desc">Elimina todos los registros permanentemente</div></div><button class="btn-sec btn-danger" onclick="confirmBorrar()">Borrar todo</button></div>
+            <div class="cfg-row"><div><div class="cfg-lbl" style="color:var(--red)">Borrar todos los datos</div><div class="cfg-desc">Elimina TODOS los registros permanentemente · No se puede deshacer</div></div><button class="btn-sec btn-danger" onclick="paso1Borrar()">Borrar todo</button></div>
           </div>
           <div class="cfg-section">
             <div class="cfg-title">App</div>
@@ -753,17 +756,17 @@ body{background:var(--bg);color:var(--t1);
         <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><line x1="12" y1="8" x2="12" y2="16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
         <div class="tab-l">Registrar</div>
       </div>
-      <div class="tab" data-p="historial">
-        <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><rect x="9" y="3" width="6" height="4" rx="1.5" stroke="currentColor" stroke-width="1.7"/><line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="9" y1="16" x2="13" y2="16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-        <div class="tab-l">Historial</div>
+      <div class="tab" data-p="ingresos">
+        <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><polyline points="3 17 9 11 13 15 21 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="15 7 21 7 21 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="tab-l">Ingresos</div>
       </div>
       <div class="tab" data-p="egresos">
         <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><polyline points="3 7 9 13 13 9 21 17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="15 17 21 17 21 11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <div class="tab-l">Egresos</div>
       </div>
-      <div class="tab" data-p="estadocuenta">
-        <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="8" y1="17" x2="12" y2="17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-        <div class="tab-l">PDF</div>
+      <div class="tab" data-p="historial">
+        <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><rect x="9" y="3" width="6" height="4" rx="1.5" stroke="currentColor" stroke-width="1.7"/><line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="9" y1="16" x2="13" y2="16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <div class="tab-l">Historial</div>
       </div>
     </nav>
   </div><!-- /main -->
@@ -822,7 +825,8 @@ const COLS=["#818CF8","#F87171","#FBBF24","#4ADE80","#C084FC","#67E8F9","#FB923C
 const ICO={"Internet":"📡","Línea Móvil":"📱","Cuidado Personal":"🧴","Gasto Recreacional":"🎉","Transporte":"🚌","Colegio":"🏫","Lonchera":"🍱","Herbalife":"🌿","Luz":"💡","Agua":"💧","Gas":"🔥","Sueldo":"💼","R.H.":"🏠","Radio":"📻","Negocio":"💹","Otros":"💰","Pañal":"👶","Alimento":"🍽️","Salud":"🏥"};
 
 // ── State ──
-let S={tx:[],catE:[],catI:[],pres:{},cfg:{},mes:MESES[new Date().getMonth()]};
+let anoActual=new Date().getFullYear();
+let S={tx:[],catE:[],catI:[],pres:{},cfg:{},mes:MESES[new Date().getMonth()],ano:new Date().getFullYear()};
 let currentUser=null,appReady=false,curPage='dashboard';
 let cA=null,cD=null,chartsReady=false;
 let unsubL=[],refreshTimer=null,tT=null,mCb=null,editId=null;
@@ -834,7 +838,7 @@ function getDia(f){return new Date(f+'T12:00:00').toLocaleDateString('es-PE',{we
 function fmt(v){return`S/ ${parseFloat(v||0).toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2})}`}
 function whoAmI(){return UNAMES[currentUser?.email]||'Usuario'}
 function userTag(u){return u?`<span class="utag ${u==='Erick'?'utag-e':'utag-v'}">${u}</span>`:''}
-function txM(m){return S.tx.filter(t=>t.mes===m)}
+function txM(m){return S.tx.filter(t=>t.mes===m&&(parseInt(t.fecha?.slice(0,4)||t.codigo?.slice(0,4)||S.ano)===S.ano))}
 function ingM(m){return txM(m).filter(t=>t.tipo==='Ingreso').reduce((a,t)=>a+t.monto,0)}
 function gstM(m){return txM(m).filter(t=>t.tipo==='Egreso').reduce((a,t)=>a+t.monto,0)}
 function catG(m){const r={};txM(m).filter(t=>t.tipo==='Egreso').forEach(t=>{r[t.concepto]=(r[t.concepto]||0)+t.monto});return r}
@@ -852,7 +856,7 @@ function genCodigo(mes){
   const ab={Enero:"Ene",Febrero:"Feb",Marzo:"Mar",Abril:"Abr",Mayo:"May",Junio:"Jun",Julio:"Jul",Agosto:"Ago",Setiembre:"Sep",Octubre:"Oct",Noviembre:"Nov",Diciembre:"Dic"};
   const existing=S.tx.filter(t=>t.mes===mes&&t.codigo).map(t=>parseInt(t.codigo?.split('-')[2])||0);
   const next=(existing.length?Math.max(...existing):0)+1;
-  return`2026-${ab[mes]||mes.slice(0,3)}-${String(next).padStart(6,'0')}`;
+  return`${S.ano}-${ab[mes]||mes.slice(0,3)}-${String(next).padStart(6,'0')}`;
 }
 
 // ── Sync indicator ──
@@ -950,7 +954,7 @@ function refreshPage(){
     if(pg&&pg.classList.contains('on')){
       const prevScroll=pg.scrollTop;
       renderPage(curPage);
-      if(curPage==='dashboard')updCharts(S.mes);
+      if(curPage==='dashboard')updCharts();
       pg.scrollTop=prevScroll;
     }
     setSS('online');
@@ -1023,6 +1027,27 @@ function buildMonth(){
     const fmf=document.getElementById('fMF');
     if(fmf&&!fmf.querySelector(`option[value="${m}"]`)){const o=document.createElement('option');o.value=m;o.textContent=m;fmf.appendChild(o)}
   });
+  // Selector de año dinámico
+  buildAnoSelector();
+}
+
+function buildAnoSelector(){
+  const anosDisponibles=[...new Set(S.tx.map(t=>parseInt(t.fecha?.slice(0,4)||t.codigo?.slice(0,4)||new Date().getFullYear())))].filter(a=>!isNaN(a));
+  const anoMin=Math.min(new Date().getFullYear(),...anosDisponibles);
+  const anoMax=Math.max(new Date().getFullYear()+1,...anosDisponibles);
+  const anos=[];for(let a=anoMax;a>=Math.min(anoMin,2024);a--)anos.push(a);
+  ['anoSel','anoSelMob'].forEach(id=>{
+    const sel=document.getElementById(id);
+    if(!sel)return;
+    sel.innerHTML=anos.map(a=>`<option value="${a}"${a===S.ano?' selected':''}>${a}</option>`).join('');
+  });
+}
+
+function setAno(a){
+  S.ano=parseInt(a);
+  ['anoSel','anoSelMob'].forEach(id=>{const s=document.getElementById(id);if(s)s.value=a});
+  renderPage(curPage);
+  if(curPage==='dashboard')updCharts();
 }
 
 function setMes(m){
@@ -1030,7 +1055,7 @@ function setMes(m){
   document.querySelectorAll('.mpill').forEach(p=>p.classList.toggle('on',p.textContent===m.slice(0,3)));
   const selMob=document.getElementById('mselMob');if(selMob)selMob.value=m;
   renderPage(curPage);
-  if(curPage==='dashboard')updCharts(m);
+  if(curPage==='dashboard')updCharts();
 }
 
 // ── Charts ──
@@ -1055,11 +1080,15 @@ function initCharts(){
   cD=new Chart(donutCtx,{type:'doughnut',data:{labels:[],datasets:[{data:[],backgroundColor:[],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'75%',animation:{duration:600},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.label}: ${fmt(c.raw)} (${Math.round(c.parsed/c.dataset.data.reduce((a,v)=>a+v,0)*100)}%)`},backgroundColor:'rgba(17,17,40,.95)',borderColor:'rgba(129,140,248,.2)',borderWidth:1}}}});
 }
 
-function updCharts(m){
+function updCharts(){
   if(!chartsReady||!cA||!cD)return;
+  const m=S.mes;
   cA.data.datasets[0].data=MESES.map(x=>ingM(x));
   cA.data.datasets[1].data=MESES.map(x=>gstM(x));
   cA.data.datasets[2].data=MESES.map(x=>Math.max(0,ingM(x)-gstM(x)));
+  // Actualizar label del eje X con año actual
+  const anoChrts=document.querySelector('.chd .ct');
+  cA.options.plugins.title={display:false};
   cA.update('active');
   requestAnimationFrame(()=>{cA.resize();cD.resize()});
   const entries=Object.entries(catG(m)).sort((a,b)=>b[1]-a[1]);
@@ -1085,6 +1114,8 @@ function updCharts(m){
 // ── Dashboard ──
 function renderDash(){
   const m=S.mes;
+  const flujoTitle=document.getElementById('flujoTitle');
+  if(flujoTitle)flujoTitle.textContent=`Flujo anual ${S.ano}`;
   const ing=ingM(m),gst=gstM(m),aho=ing-gst;
   const pr=Object.values(S.pres).reduce((a,mc)=>a+(mc[m]||0),0);
   const sal=pr-gst;
@@ -1128,7 +1159,7 @@ function renderDash(){
   const t3t=top3.reduce((a,[,v])=>a+v,0);
   document.getElementById('t3Pill').textContent=m;
   document.getElementById('t3L').innerHTML=[0,1,2].map(i=>{const[cat,val]=top3[i]||['Sin datos',0];const p=t3t>0&&val>0?Math.round(val/t3t*100):0;return`<div class="t3i" style="${!top3[i]?'opacity:.3':''}"><div class="t3r">${i+1}</div><div class="t3inf"><div class="t3n">${cat}</div><div class="t3p">${p}% del total</div></div><div class="t3v">${val>0?fmt(val):'—'}</div></div>`}).join('');
-  updCharts(m);
+  updCharts();
 }
 
 // ── Registro ──
@@ -1475,40 +1506,163 @@ function renderPDFPreview(m){
 
 function generarPDF(){
   const m=document.getElementById('pdfMes').value;
-  const jsPDF=window.jspdf?.jsPDF||window.jsPDF;
-  if(!jsPDF){toast('PDF aún cargando, espera un momento','err');return}
+  const _j=window.jspdf||window.jsPDF;
+  if(!_j||!_j.jsPDF){toast('PDF aún cargando, espera un momento','err');return}
+  const{jsPDF}=_j;
   const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-  const W=doc.internal.pageSize.getWidth();
-  // Header
-  doc.setFillColor(10,10,25);doc.rect(0,0,W,40,'F');
-  doc.setTextColor(161,174,255);doc.setFontSize(18);doc.setFont('helvetica','bold');
-  doc.text('Finanza PRO',14,18);
-  doc.setTextColor(88,88,160);doc.setFontSize(9);doc.setFont('helvetica','normal');
-  doc.text('Estado de cuenta mensual · Solier Arias',14,26);
-  doc.setTextColor(255,255,255);doc.setFontSize(14);doc.setFont('helvetica','bold');
-  doc.text(`${m} 2026`,W-14,20,{align:'right'});
-  // Summary
+  const W=210,PL=16,PR=16,CW=210-PL-PR;
+  const pf=v=>'S/ '+parseFloat(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const now=new Date();
+  const hoyStr=now.getDate()+' de '+['enero','febrero','marzo','abril','mayo','junio','julio','agosto','setiembre','octubre','noviembre','diciembre'][now.getMonth()]+' de '+S.ano;
   const ing=ingM(m),gst=gstM(m),bal=ing-gst;
-  doc.setFillColor(17,17,40);doc.rect(0,40,W,28,'F');
-  doc.setTextColor(88,88,160);doc.setFontSize(8);doc.setFont('helvetica','normal');
-  doc.text('INGRESOS',14,50);doc.text('EGRESOS',70,50);doc.text('BALANCE',126,50);
-  doc.setFontSize(13);doc.setFont('helvetica','bold');
-  doc.setTextColor(74,222,128);doc.text(fmt(ing),14,60);
-  doc.setTextColor(248,113,113);doc.text(fmt(gst),70,60);
-  doc.setTextColor(bal>=0?74:248,bal>=0?222:113,bal>=0?128:113);doc.text(fmt(bal),126,60);
-  // Table
-  const txs=txM(m).sort((a,b)=>(b.ts||0)-(a.ts||0));
-  doc.autoTable({
-    startY:72,
-    head:[['Código','Tipo','Concepto','Descripción','Monto','Fecha','Banco','Usuario']],
-    body:txs.map(t=>[(t.codigo||codigoLeg(t)),t.tipo,t.concepto,t.desc||'',`${t.tipo==='Ingreso'?'+':'-'} ${fmt(t.monto)}`,t.fecha||'',t.banco||'',t.user||'']),
-    styles:{fontSize:8,cellPadding:3,textColor:[161,174,255],fillColor:[12,12,24],lineColor:[40,40,80],lineWidth:.3},
-    headStyles:{fillColor:[17,17,40],textColor:[88,88,160],fontStyle:'bold',fontSize:7},
-    alternateRowStyles:{fillColor:[15,15,32]},
-    columnStyles:{0:{cellWidth:28},1:{cellWidth:16},4:{halign:'right',cellWidth:24}},
+  const pr=Object.values(S.pres).reduce((a,mc)=>a+(mc[m]||0),0);
+  const ingTx=txM(m).filter(t=>t.tipo==='Ingreso').sort((a,b)=>(a.ts||0)-(b.ts||0));
+  const gstTx=txM(m).filter(t=>t.tipo==='Egreso').sort((a,b)=>(a.ts||0)-(b.ts||0));
+  const refDoc=`EC-${S.ano}-${String(MESES.indexOf(m)+1).padStart(2,'0')}`;
+
+  // ── CABECERA OSCURA ──
+  doc.setFillColor(7,7,15);doc.rect(0,0,W,52,'F');
+  // Barra acento indigo
+  doc.setFillColor(99,102,241);doc.rect(0,0,W,2.5,'F');
+  // Logo cuadro
+  doc.setFillColor(99,102,241);doc.roundedRect(PL,10,12,12,2.5,2.5,'F');
+  doc.setTextColor(255,255,255);doc.setFontSize(6.5);doc.setFont('helvetica','bold');
+  doc.text('FP',PL+6,17.5,{align:'center'});
+  // Nombre app
+  doc.setFontSize(13);doc.setFont('helvetica','bold');doc.setTextColor(200,200,255);
+  doc.text('Finanza PRO',PL+16,16);
+  doc.setFontSize(7.5);doc.setFont('helvetica','normal');doc.setTextColor(88,88,140);
+  doc.text('Finanzas del hogar · Solier Arias',PL+16,22);
+  // Título derecha
+  doc.setFontSize(8);doc.setFont('helvetica','bold');doc.setTextColor(88,88,140);
+  doc.text('REF. '+refDoc,W-PR,12,{align:'right'});
+  doc.text('Emitido: '+hoyStr,W-PR,19,{align:'right'});
+  // Título principal
+  doc.setFontSize(22);doc.setFont('helvetica','bold');doc.setTextColor(240,240,255);
+  doc.text('Estado de cuenta',PL,40);
+  doc.setFontSize(11);doc.setFont('helvetica','normal');doc.setTextColor(100,100,160);
+  doc.text(m+' '+S.ano,PL,48);
+
+  // ── BANNER RESUMEN ──
+  let y=56;
+  const bW=CW/3;
+  [[' INGRESOS',pf(ing),[74,222,128]],[' EGRESOS',pf(gst),[248,113,113]],['  BALANCE',pf(bal),bal>=0?[74,222,128]:[248,113,113]]].forEach(([lbl,val,col],i)=>{
+    const bx=PL+i*bW;
+    doc.setFillColor(15,15,30);doc.rect(bx,y,bW,22,'F');
+    if(i<2){doc.setDrawColor(40,40,80);doc.setLineWidth(.3);doc.line(bx+bW,y+3,bx+bW,y+19);}
+    doc.setFontSize(7);doc.setFont('helvetica','bold');doc.setTextColor(80,80,130);doc.text(lbl,bx+4,y+7);
+    doc.setFontSize(12);doc.setFont('helvetica','bold');doc.setTextColor(...col);doc.text(val,bx+4,y+17);
   });
-  doc.save(`FinanzaPRO-${m}-2026.pdf`);
-  toast('✓ PDF descargado');
+  y+=22;
+
+  // ── Mini stats ──
+  doc.setFillColor(12,12,25);doc.rect(PL,y,CW,10,'F');
+  doc.setFontSize(7.5);doc.setFont('helvetica','normal');doc.setTextColor(80,80,120);
+  doc.text(`Presupuesto del mes: ${pf(pr)}`,PL+4,y+6.5);
+  const pctEjec=pr>0?Math.round(Math.min(gst,pr)/pr*100):0;
+  doc.text(`Ejecución: ${pctEjec}%`,PL+50,y+6.5);
+  doc.text(`Transacciones: ${ingTx.length+gstTx.length} registros`,PL+85,y+6.5);
+  doc.text(`Ahorro: ${pf(Math.max(0,bal))}`,W-PR-4,y+6.5,{align:'right'});
+  y+=10;
+
+  // Separador
+  doc.setDrawColor(40,40,80);doc.setLineWidth(.4);doc.line(PL,y+2,W-PR,y+2);y+=7;
+
+  // ── SECCIÓN INGRESOS ──
+  function secTitle(title,yPos){
+    doc.setFillColor(20,20,45);doc.rect(PL,yPos,CW,8,'F');
+    doc.setFontSize(8.5);doc.setFont('helvetica','bold');doc.setTextColor(161,174,255);
+    doc.text(title,PL+4,yPos+5.5);
+    return yPos+8;
+  }
+
+  if(ingTx.length){
+    y=secTitle('INGRESOS DEL MES',y);
+    doc.autoTable({
+      startY:y,
+      head:[['Código','Fecha','Fuente / Concepto','Descripción','Banco','Usuario','Monto']],
+      body:ingTx.map(t=>[t.codigo||codigoLeg(t),t.fecha||'',t.concepto,t.desc||'—',t.banco||'—',t.user||'—',pf(t.monto)]),
+      theme:'plain',
+      styles:{fontSize:8,cellPadding:{top:2.5,bottom:2.5,left:2,right:2},textColor:[180,185,220],lineColor:[30,30,60],lineWidth:.2,font:'helvetica'},
+      headStyles:{fillColor:[17,17,40],textColor:[99,102,160],fontSize:7,fontStyle:'bold',cellPadding:{top:3,bottom:3,left:2,right:2}},
+      alternateRowStyles:{fillColor:[12,12,28]},
+      bodyStyles:{fillColor:[9,9,20]},
+      columnStyles:{0:{cellWidth:28,textColor:[129,140,248],fontSize:7.5},1:{cellWidth:20},2:{cellWidth:'auto',fontStyle:'bold'},3:{cellWidth:32},4:{cellWidth:18},5:{cellWidth:16},6:{cellWidth:24,halign:'right',fontStyle:'bold',textColor:[74,222,128]}},
+      margin:{left:PL,right:PR},
+      foot:[['','','','','','TOTAL',pf(ing)]],
+      footStyles:{fillColor:[17,17,40],textColor:[74,222,128],fontStyle:'bold',fontSize:8.5,halign:'right'},
+    });
+    y=doc.lastAutoTable.finalY+6;
+  }
+
+  // ── SECCIÓN EGRESOS ──
+  if(gstTx.length){
+    if(y>220){doc.addPage();doc.setFillColor(7,7,15);doc.rect(0,0,W,8,'F');y=12;}
+    y=secTitle('EGRESOS DEL MES',y);
+    doc.autoTable({
+      startY:y,
+      head:[['Código','Fecha','Categoría','Descripción','Banco','Usuario','Monto']],
+      body:gstTx.map(t=>[t.codigo||codigoLeg(t),t.fecha||'',t.concepto,t.desc||'—',t.banco||'—',t.user||'—',pf(t.monto)]),
+      theme:'plain',
+      styles:{fontSize:8,cellPadding:{top:2.5,bottom:2.5,left:2,right:2},textColor:[180,185,220],lineColor:[30,30,60],lineWidth:.2},
+      headStyles:{fillColor:[17,17,40],textColor:[99,102,160],fontSize:7,fontStyle:'bold',cellPadding:{top:3,bottom:3,left:2,right:2}},
+      alternateRowStyles:{fillColor:[12,12,28]},
+      bodyStyles:{fillColor:[9,9,20]},
+      columnStyles:{0:{cellWidth:28,textColor:[129,140,248],fontSize:7.5},1:{cellWidth:20},2:{cellWidth:'auto',fontStyle:'bold'},3:{cellWidth:32},4:{cellWidth:18},5:{cellWidth:16},6:{cellWidth:24,halign:'right',fontStyle:'bold',textColor:[248,113,113]}},
+      margin:{left:PL,right:PR},
+      foot:[['','','','','','TOTAL',pf(gst)]],
+      footStyles:{fillColor:[17,17,40],textColor:[248,113,113],fontStyle:'bold',fontSize:8.5,halign:'right'},
+    });
+    y=doc.lastAutoTable.finalY+6;
+  }
+
+  // ── PRESUPUESTO ──
+  const cgM=Object.fromEntries(gstTx.reduce((a,t)=>{a.set(t.concepto,(a.get(t.concepto)||0)+t.monto);return a},new Map()));
+  const presCats=[...new Set([...Object.keys(S.pres),...Object.keys(cgM)])].filter(c=>(S.pres[c]?.[m]||0)>0||(cgM[c]||0)>0);
+  if(presCats.length){
+    if(y>220){doc.addPage();doc.setFillColor(7,7,15);doc.rect(0,0,W,8,'F');y=12;}
+    y=secTitle('EJECUCIÓN PRESUPUESTAL',y);
+    doc.autoTable({
+      startY:y,
+      head:[['Categoría','Presupuesto','Ejecutado','Saldo','Ejecución']],
+      body:presCats.map(c=>{const b=S.pres[c]?.[m]||0,e=cgM[c]||0,sal=b-e,pp=b>0?Math.round(e/b*100):0;return[c,b>0?pf(b):'—',e>0?pf(e):'—',(sal<0?'-':'')+pf(Math.abs(sal)),pp+'%'];}),
+      theme:'plain',
+      styles:{fontSize:8,cellPadding:{top:2.5,bottom:2.5,left:2,right:2},textColor:[180,185,220],lineColor:[30,30,60],lineWidth:.2},
+      headStyles:{fillColor:[17,17,40],textColor:[99,102,160],fontSize:7,fontStyle:'bold',cellPadding:{top:3,bottom:3,left:2,right:2}},
+      alternateRowStyles:{fillColor:[12,12,28]},
+      bodyStyles:{fillColor:[9,9,20]},
+      columnStyles:{0:{fontStyle:'bold'},1:{halign:'right',textColor:[251,191,36]},2:{halign:'right',textColor:[248,113,113]},3:{halign:'right',textColor:[74,222,128]},4:{halign:'right',textColor:[100,100,160]}},
+      margin:{left:PL,right:PR},
+    });
+    y=doc.lastAutoTable.finalY+8;
+  }
+
+  // ── CAJA TOTALES FINAL ──
+  const ty=Math.min(y,248);
+  doc.setFillColor(15,15,35);doc.rect(W-PR-70,ty,70,32,'F');
+  doc.setDrawColor(99,102,241);doc.setLineWidth(.5);doc.rect(W-PR-70,ty,70,32,'S');
+  doc.setLineWidth(.2);
+  [['Total ingresos',pf(ing),[74,222,128]],['Total egresos',pf(gst),[248,113,113]],['Presupuesto',pf(pr),[251,191,36]]].forEach(([l,v,c],i)=>{
+    const ly=ty+7+i*7;
+    doc.setFontSize(7.5);doc.setFont('helvetica','normal');doc.setTextColor(80,80,130);doc.text(l,W-PR-66,ly);
+    doc.setFont('helvetica','bold');doc.setTextColor(...c);doc.text(v,W-PR-2,ly,{align:'right'});
+    if(i<2){doc.setDrawColor(30,30,60);doc.line(W-PR-66,ly+2.5,W-PR-2,ly+2.5);}
+  });
+  doc.setDrawColor(99,102,241);doc.setLineWidth(.4);doc.line(W-PR-66,ty+28,W-PR-2,ty+28);
+  doc.setFontSize(9);doc.setFont('helvetica','bold');doc.setTextColor(200,210,255);
+  doc.text('Ahorro neto',W-PR-66,ty+31.5);
+  doc.setTextColor(bal>=0?74:248,bal>=0?222:113,bal>=0?128:113);doc.text(pf(bal),W-PR-2,ty+31.5,{align:'right'});
+
+  // ── FOOTER ──
+  const H=297;
+  doc.setFillColor(7,7,15);doc.rect(0,H-12,W,12,'F');
+  doc.setDrawColor(99,102,241);doc.setLineWidth(.3);doc.line(0,H-12,W,H-12);
+  doc.setFontSize(7);doc.setFont('helvetica','normal');doc.setTextColor(50,50,100);
+  doc.text('Finanza PRO  •  Finanzas del hogar  •  Documento generado automáticamente  •  Confidencial',PL,H-5);
+  doc.text(`${refDoc}  •  Pág. 1`,W-PR,H-5,{align:'right'});
+
+  doc.save(`FinanzaPRO-${m}-${S.ano}.pdf`);
+  toast('✓ PDF descargado correctamente');
 }
 
 // ── Config ──
@@ -1525,14 +1679,40 @@ function exportCSV(){
   toast('✓ CSV descargado');
 }
 
-function confirmBorrar(){
-  showMod('¿Borrar todos los datos?','Esta acción eliminará TODOS los registros permanentemente. No se puede deshacer.',()=>{
-    setSS('syncing');
-    const batch=db.batch();
-    S.tx.forEach(t=>batch.delete(db.collection('transactions').doc(t._id)));
-    batch.commit().then(()=>toast('Datos eliminados')).catch(()=>{toast('Error al borrar','err');setSS('offline')});
-  });
+function paso1Borrar(){
+  showMod(
+    '⚠️ Paso 1 de 3 — ¿Estás seguro?',
+    `Esto eliminará los ${S.tx.length} registros permanentemente. Esta acción NO se puede deshacer.`,
+    ()=>paso2Borrar()
+  );
 }
+function paso2Borrar(){
+  showMod(
+    '⚠️ Paso 2 de 3 — Confirma tu intención',
+    'Se eliminarán TODOS los movimientos de ingresos, egresos y presupuesto. ¿Continuar?',
+    ()=>paso3Borrar()
+  );
+}
+function paso3Borrar(){
+  showMod(
+    '🔴 Paso 3 de 3 — ÚLTIMA CONFIRMACIÓN',
+    'Esta es tu última oportunidad de cancelar. Una vez confirmado, los datos NO se pueden recuperar.',
+    ()=>{
+      setSS('syncing');
+      const batch=db.batch();
+      S.tx.forEach(t=>batch.delete(db.collection('transactions').doc(t._id)));
+      batch.commit()
+        .then(()=>toast('Todos los datos han sido eliminados'))
+        .catch(()=>{toast('Error al borrar','err');setSS('offline')});
+    }
+  );
+  // Cambiar color del botón confirmar en el último paso
+  setTimeout(()=>{
+    const btn=document.getElementById('mOk');
+    if(btn){btn.style.background='#DC2626';btn.textContent='SÍ, BORRAR TODO';}
+  },50);
+}
+function confirmBorrar(){paso1Borrar();}
 
 // ── PWA Service Worker ──
 // Service Worker deshabilitado para evitar conflictos de caché
