@@ -811,8 +811,8 @@ const ALLOWED=["sowill.arm@gmail.com","veroclaudia10@gmail.com"];
 const UNAMES={"sowill.arm@gmail.com":"Erick","veroclaudia10@gmail.com":"Verónica"};
 const UCOLS={"sowill.arm@gmail.com":["rgba(129,140,248,.2)","#A5B4FC"],"veroclaudia10@gmail.com":["rgba(74,222,128,.2)","#4ADE80"]};
 firebase.initializeApp(FB_CONFIG);
-db.enablePersistence({synchronizeTabs:true}).catch(()=>{});
 const auth=firebase.auth(),db=firebase.firestore();
+db.enablePersistence({synchronizeTabs:true}).catch(()=>{});
 
 // ── Constants ──
 const MESES=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre"];
