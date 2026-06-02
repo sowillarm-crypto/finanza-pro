@@ -1687,11 +1687,44 @@ function renderConfig(){
 }
 
 function exportCSV(){
-  const rows=[['Código','Tipo','Concepto','Descripción','Monto','Fecha','Mes','Día','Banco','Usuario']];
-  S.tx.sort((a,b)=>(b.ts||0)-(a.ts||0)).forEach(t=>{rows.push([(t.codigo||codigoLeg(t)),t.tipo,t.concepto,t.desc||'',t.monto,t.fecha||'',t.mes||'',t.dia||'',t.banco||'',t.user||''])});
-  const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);a.download='FinanzaPRO-datos.csv';a.click();
-  toast('✓ CSV descargado');
+  // Usar punto y coma como separador — compatible con Excel en español
+  const SEP=';';
+  const rows=[
+    ['Código','Tipo','Concepto','Descripción','Monto (S/)','Fecha','Mes','Día','Banco','Usuario']
+  ];
+  // Ordenar por fecha más reciente
+  [...S.tx].sort((a,b)=>(b.ts||0)-(a.ts||0)).forEach(t=>{
+    rows.push([
+      t.codigo||codigoLeg(t),
+      t.tipo||'',
+      t.concepto||'',
+      t.desc||'',
+      parseFloat(t.monto||0).toFixed(2),
+      t.fecha||'',
+      t.mes||'',
+      t.dia||'',
+      t.banco||'Efectivo',
+      t.user||''
+    ]);
+  });
+  // Escapar correctamente: solo poner comillas si el campo contiene el separador, coma o salto de línea
+  const escape=v=>{
+    const s=String(v);
+    if(s.includes(SEP)||s.includes('"')||s.includes('\n')||s.includes(','))
+      return '"'+s.replace(/"/g,'""')+'"';
+    return s;
+  };
+  const csv=rows.map(r=>r.map(escape).join(SEP)).join('\r\n');
+  // BOM UTF-8 para que Excel reconozca tildes y ñ
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`FinanzaPRO-${S.ano}-registros.csv`;
+  document.body.appendChild(a);a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast(`✓ CSV descargado — ${S.tx.length} registros`);
 }
 
 function paso1Borrar(){
