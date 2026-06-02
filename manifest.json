@@ -1,0 +1,19 @@
+{
+  "name": "Finanza PRO",
+  "short_name": "Finanza PRO",
+  "description": "Finanzas del hogar · Solier Arias",
+  "start_url": "/contabilidad-2026/",
+  "scope": "/contabilidad-2026/",
+  "display": "standalone",
+  "background_color": "#07070F",
+  "theme_color": "#07070F",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
