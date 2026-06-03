@@ -403,6 +403,26 @@ body{background:var(--bg);color:var(--t1);
 .tab.on .tab-svg{color:var(--acc);transform:translateY(-2px) scale(1.08)}
 .tab.on .tab-l{color:var(--acc)}
 .tab:active .tab-svg{transform:scale(.88)}
+/* Tab movimientos — no aplica color general, maneja sus propios colores */
+#tabMov.on .tab-svg{color:inherit;transform:translateY(-2px) scale(1.08)}
+#tabMov.on .tab-l{color:var(--grn)}
+#tabMov.on.egr-mode .tab-l{color:var(--red)}
+/* Segment control */
+.mov-seg{display:flex;gap:3px;background:rgba(255,255,255,.04);border:1px solid var(--br);border-radius:var(--r12);padding:3px;margin-bottom:8px}
+.mov-seg-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:7px 8px;border-radius:var(--r10);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--t3);border:1px solid transparent;user-select:none}
+.mov-seg-btn.ing-on{background:rgba(74,222,128,.12);color:var(--grn);border-color:rgba(74,222,128,.18)}
+.mov-seg-btn.egr-on{background:rgba(248,113,113,.12);color:var(--red);border-color:rgba(248,113,113,.18)}
+.mov-count{font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px}
+.mov-count.g{background:rgba(74,222,128,.15);color:var(--grn)}
+.mov-count.r{background:rgba(248,113,113,.15);color:var(--red)}
+.mov-summary{display:flex;justify-content:space-between;align-items:center;padding:9px 13px;border-radius:var(--r10);margin-bottom:8px}
+.mov-summary.ing{background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.12)}
+.mov-summary.egr{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.12)}
+.mov-sum-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.mov-sum-lbl.g{color:var(--grn)}.mov-sum-lbl.r{color:var(--red)}
+.mov-sum-meta{font-size:9.5px;color:var(--t3);margin-top:1px}
+.mov-sum-val{font-size:16px;font-weight:800;letter-spacing:-.4px}
+.mov-sum-val.g{color:var(--grn)}.mov-sum-val.r{color:var(--red)}
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:900px){
@@ -661,6 +681,27 @@ body{background:var(--bg);color:var(--t1);
         </div>
       </div>
 
+      <!-- MOVIMIENTOS (tab unificado móvil) -->
+      <div class="page" id="page-movimientos">
+        <div class="card">
+          <div class="chd"><span class="ct">Movimientos</span><span class="cp" id="movPill">—</span></div>
+          <div class="mov-seg">
+            <div class="mov-seg-btn ing-on" id="segIng" onclick="setMovMode('ingresos')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" id="segIngIco"><polyline points="3 17 9 11 13 15 21 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="15 7 21 7 21 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Ingresos
+              <span class="mov-count g" id="ingCount">0</span>
+            </div>
+            <div class="mov-seg-btn" id="segEgr" onclick="setMovMode('egresos')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" id="segEgrIco"><polyline points="3 7 9 13 13 9 21 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="15 17 21 17 21 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Egresos
+              <span class="mov-count r" id="egrCount">0</span>
+            </div>
+          </div>
+          <div id="movSummary"></div>
+          <div id="movList"></div>
+        </div>
+      </div>
+
       <!-- INGRESOS -->
       <div class="page" id="page-ingresos">
         <div class="card">
@@ -759,13 +800,20 @@ body{background:var(--bg);color:var(--t1);
         <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><line x1="12" y1="8" x2="12" y2="16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
         <div class="tab-l">Registrar</div>
       </div>
-      <div class="tab" data-p="ingresos">
-        <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><polyline points="3 17 9 11 13 15 21 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="15 7 21 7 21 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="tab-l">Ingresos</div>
+      <div class="tab" id="tabMov" data-p="movimientos" onclick="goToMov()">
+        <svg class="tab-svg" viewBox="0 0 24 24" fill="none" id="movTabIco">
+          <!-- Flecha arriba (ingresos) -->
+          <polyline id="arrowUp" points="3 17 9 11 13 15 21 7" stroke="#4ADE80" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline id="arrowUpTip" points="15 7 21 7 21 13" stroke="#4ADE80" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Flecha abajo (egresos) — apagada por defecto -->
+          <polyline id="arrowDn" points="3 7 9 13 13 9 21 17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".3"/>
+          <polyline id="arrowDnTip" points="15 17 21 17 21 11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".3"/>
+        </svg>
+        <div class="tab-l" id="movTabLabel">Ingresos</div>
       </div>
-      <div class="tab" data-p="egresos">
-        <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><polyline points="3 7 9 13 13 9 21 17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="15 17 21 17 21 11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="tab-l">Egresos</div>
+      <div class="tab" data-p="historial">
+        <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><rect x="9" y="3" width="6" height="4" rx="1.5" stroke="currentColor" stroke-width="1.7"/><line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="9" y1="16" x2="13" y2="16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        <div class="tab-l">Historial</div>
       </div>
       <div class="tab" data-p="estadocuenta">
         <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="8" y1="17" x2="12" y2="17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
@@ -996,6 +1044,10 @@ function goTo(p){
   if(p===curPage){const pg=document.getElementById('page-'+p);if(pg)pg.scrollTop=0;return}
   document.querySelectorAll('.ni[data-p]').forEach(el=>el.classList.toggle('on',el.dataset.p===p));
   document.querySelectorAll('.tab[data-p]').forEach(el=>el.classList.toggle('on',el.dataset.p===p));
+  // Tab movimientos — activar cuando se navega a esa página
+  const tabMovEl=document.getElementById('tabMov');
+  if(tabMovEl)tabMovEl.classList.toggle('on',p==='movimientos');
+  setTimeout(updMovIcon,50);
   document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('on'));
   // Update topbar title
   const titles={dashboard:'Resumen financiero',registro:'Nuevo registro',historial:'Historial',ingresos:'Ingresos',egresos:'Egresos',presupuesto:'Presupuesto',categorias:'Categorías',estadocuenta:'Estado de cuenta',config:'Configuración'};
@@ -1014,6 +1066,8 @@ function renderPage(p){
   if(p==='dashboard')renderDash();
   else if(p==='registro')setupReg();
   else if(p==='historial')renderHistorial();
+  else if(p==='movimientos')renderMovimientos();
+  else if(p==='movimientos')renderMovimientos();
   else if(p==='ingresos')renderIngresos();
   else if(p==='egresos')renderEgresos();
   else if(p==='presupuesto')renderPresupuesto();
@@ -1055,6 +1109,58 @@ function setAno(a){
   ['anoSel','anoSelMob'].forEach(id=>{const s=document.getElementById(id);if(s)s.value=a});
   renderPage(curPage);
   if(curPage==='dashboard')updCharts();
+}
+
+// ── TAB MOVIMIENTOS UNIFICADO ──
+let movMode='ingresos';
+
+function updMovIcon(){
+  const isIng=movMode==='ingresos';
+  const up1=document.getElementById('arrowUp'),up2=document.getElementById('arrowUpTip');
+  const dn1=document.getElementById('arrowDn'),dn2=document.getElementById('arrowDnTip');
+  if(up1){up1.setAttribute('stroke',isIng?'#4ADE80':'#5858A0');up1.setAttribute('opacity',isIng?'1':'0.35');}
+  if(up2){up2.setAttribute('stroke',isIng?'#4ADE80':'#5858A0');up2.setAttribute('opacity',isIng?'1':'0.35');}
+  if(dn1){dn1.setAttribute('stroke',!isIng?'#F87171':'#5858A0');dn1.setAttribute('opacity',!isIng?'1':'0.35');}
+  if(dn2){dn2.setAttribute('stroke',!isIng?'#F87171':'#5858A0');dn2.setAttribute('opacity',!isIng?'1':'0.35');}
+  const lbl=document.getElementById('movTabLabel');
+  if(lbl){lbl.textContent=isIng?'Ingresos':'Egresos';lbl.style.color=isIng?'var(--grn)':'var(--red)';}
+  const tabMov=document.getElementById('tabMov');
+  if(tabMov){tabMov.classList.toggle('egr-mode',!isIng);}
+}
+
+function goToMov(){
+  if(curPage==='movimientos'){
+    movMode=movMode==='ingresos'?'egresos':'ingresos';
+    updMovIcon();renderMovimientos();return;
+  }
+  goTo('movimientos');
+}
+
+function setMovMode(mode){
+  movMode=mode;updMovIcon();renderMovimientos();
+}
+
+function renderMovimientos(){
+  const m=S.mes,isIng=movMode==='ingresos';
+  const txs=txM(m).filter(t=>t.tipo===(isIng?'Ingreso':'Egreso')).sort((a,b)=>(b.ts||0)-(a.ts||0));
+  const total=txs.reduce((a,t)=>a+t.monto,0);
+  const ingN=txM(m).filter(t=>t.tipo==='Ingreso').length;
+  const egrN=txM(m).filter(t=>t.tipo==='Egreso').length;
+  const pill=document.getElementById('movPill');if(pill)pill.textContent=txs.length+' reg.';
+  const ic=document.getElementById('ingCount');if(ic)ic.textContent=ingN;
+  const ec=document.getElementById('egrCount');if(ec)ec.textContent=egrN;
+  const si=document.getElementById('segIng'),se=document.getElementById('segEgr');
+  if(si)si.className='mov-seg-btn'+(isIng?' ing-on':'');
+  if(se)se.className='mov-seg-btn'+(!isIng?' egr-on':'');
+  const siIco=document.getElementById('segIngIco'),seIco=document.getElementById('segEgrIco');
+  if(siIco)siIco.setAttribute('stroke',isIng?'var(--grn)':'var(--t3)');
+  if(seIco)seIco.setAttribute('stroke',!isIng?'var(--red)':'var(--t3)');
+  const sum=document.getElementById('movSummary');
+  if(sum)sum.innerHTML=`<div class="mov-summary ${isIng?'ing':'egr'}"><div><div class="mov-sum-lbl ${isIng?'g':'r'}">Total ${isIng?'ingresos':'egresos'} · ${m}</div><div class="mov-sum-meta">${txs.length} registros</div></div><div class="mov-sum-val ${isIng?'g':'r'}">${fmt(total)}</div></div>`;
+  const list=document.getElementById('movList');
+  if(!list)return;
+  if(!txs.length){list.innerHTML=`<div style="text-align:center;padding:20px;color:var(--t3);font-size:12px">Sin ${isIng?'ingresos':'egresos'} en ${m}</div>`;return;}
+  list.innerHTML=txs.map(t=>`<div class="mob-cell" onclick="selCell(this)"><div class="mob-av" style="background:${isIng?'rgba(74,222,128,.1)':'rgba(248,113,113,.1)'}">${ICO[t.concepto]||'💰'}</div><div class="mob-inf"><div class="mob-nm">${t.desc||t.concepto} ${userTag(t.user)}</div><div class="mob-meta">${t.concepto} · ${t.dia||''} · ${t.banco||''}</div></div><div class="mob-rr"><div class="mob-amt" style="color:${isIng?'var(--grn)':'var(--red)'}">${isIng?'+':'−'} ${fmt(t.monto)}</div><div class="mob-cod">${t.codigo||codigoLeg(t)}</div></div><div class="mob-actions"><button class="mob-edit" onclick="abrirEditMob(this);event.stopPropagation()" data-id="${t._id}">✎ Editar</button><button class="mob-del" onclick="delTxMob(this);event.stopPropagation()" data-id="${t._id}">🗑 Eliminar</button></div></div>`).join('');
 }
 
 function setMes(m){
