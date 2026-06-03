@@ -405,8 +405,8 @@ body{background:var(--bg);color:var(--t1);
 .tab:active .tab-svg{transform:scale(.88)}
 /* Tab movimientos — no aplica color general, maneja sus propios colores */
 #tabMov.on .tab-svg{color:inherit;transform:translateY(-2px) scale(1.08)}
-#tabMov.on .tab-l{color:var(--grn)}
-#tabMov.on.egr-mode .tab-l{color:var(--red)}
+#tabMov.on .tab-l{color:var(--acc)}
+#tabMov.on.egr-mode .tab-l{color:var(--acc)}
 /* Segment control */
 .mov-seg{display:flex;gap:3px;background:rgba(255,255,255,.04);border:1px solid var(--br);border-radius:var(--r12);padding:3px;margin-bottom:8px}
 .mov-seg-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:7px 8px;border-radius:var(--r10);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--t3);border:1px solid transparent;user-select:none}
@@ -1116,16 +1116,20 @@ let movMode='ingresos';
 
 function updMovIcon(){
   const isIng=movMode==='ingresos';
+  const ACC='#818CF8'; // color acento igual que todos los tabs
+  const OFF='#5858A0'; // apagado
   const up1=document.getElementById('arrowUp'),up2=document.getElementById('arrowUpTip');
   const dn1=document.getElementById('arrowDn'),dn2=document.getElementById('arrowDnTip');
-  if(up1){up1.setAttribute('stroke',isIng?'#4ADE80':'#5858A0');up1.setAttribute('opacity',isIng?'1':'0.35');}
-  if(up2){up2.setAttribute('stroke',isIng?'#4ADE80':'#5858A0');up2.setAttribute('opacity',isIng?'1':'0.35');}
-  if(dn1){dn1.setAttribute('stroke',!isIng?'#F87171':'#5858A0');dn1.setAttribute('opacity',!isIng?'1':'0.35');}
-  if(dn2){dn2.setAttribute('stroke',!isIng?'#F87171':'#5858A0');dn2.setAttribute('opacity',!isIng?'1':'0.35');}
+  // Flecha activa en índigo, apagada en gris oscuro
+  if(up1){up1.setAttribute('stroke',isIng?ACC:OFF);up1.setAttribute('opacity',isIng?'1':'0.3');}
+  if(up2){up2.setAttribute('stroke',isIng?ACC:OFF);up2.setAttribute('opacity',isIng?'1':'0.3');}
+  if(dn1){dn1.setAttribute('stroke',!isIng?ACC:OFF);dn1.setAttribute('opacity',!isIng?'1':'0.3');}
+  if(dn2){dn2.setAttribute('stroke',!isIng?ACC:OFF);dn2.setAttribute('opacity',!isIng?'1':'0.3');}
+  // Label del tab en color acento — igual que los demás tabs
   const lbl=document.getElementById('movTabLabel');
-  if(lbl){lbl.textContent=isIng?'Ingresos':'Egresos';lbl.style.color=isIng?'var(--grn)':'var(--red)';}
+  if(lbl){lbl.textContent=isIng?'Ingresos':'Egresos';lbl.style.color='var(--acc)';}
   const tabMov=document.getElementById('tabMov');
-  if(tabMov){tabMov.classList.toggle('egr-mode',!isIng);}
+  if(tabMov)tabMov.classList.toggle('egr-mode',!isIng);
 }
 
 function goToMov(){
