@@ -588,7 +588,7 @@ body{background:var(--bg);color:var(--t1);
         <div class="tb-title" id="PT">Resumen financiero</div>
       </div>
       <div class="tb-right">
-        <select id="anoSel" onchange="setAno(this.value)" style="background:rgba(0,0,0,.3);backdrop-filter:blur(12px);border:1px solid var(--br);border-radius:var(--r10);padding:6px 10px;font-size:12px;font-weight:600;color:var(--t2);font-family:var(--ff);outline:none;cursor:pointer"></select>
+        <select id="anoSel" onchange="setAno(this.value)" style="background:#111128;border:1px solid var(--brm);border-radius:var(--r10);padding:6px 10px;font-size:12px;font-weight:600;color:var(--t1);font-family:var(--ff);outline:none;cursor:pointer;-webkit-appearance:none;appearance:none"></select>
         <div class="month-seg" id="mseg"></div>
         <button class="add-btn" onclick="goTo('registro')">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><line x1="12" y1="5" x2="12" y2="19" stroke="white" stroke-width="2.5" stroke-linecap="round"/><line x1="5" y1="12" x2="19" y2="12" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
@@ -1096,13 +1096,13 @@ function buildMonth(){
 
 function buildAnoSelector(){
   const anosDisponibles=[...new Set(S.tx.map(t=>parseInt(t.fecha?.slice(0,4)||t.codigo?.slice(0,4)||new Date().getFullYear())))].filter(a=>!isNaN(a));
-  const anoMin=Math.min(new Date().getFullYear(),...anosDisponibles);
-  const anoMax=Math.max(new Date().getFullYear()+1,...anosDisponibles);
-  const anos=[];for(let a=anoMax;a>=Math.min(anoMin,2024);a--)anos.push(a);
+  const anoMin=Math.min(new Date().getFullYear(),...anosDisponibles,2024);
+  const anoMax=Math.max(2030,...anosDisponibles); // Siempre mostrar hasta 2030
+  const anos=[];for(let a=anoMax;a>=anoMin;a--)anos.push(a);
   ['anoSel','anoSelMob'].forEach(id=>{
     const sel=document.getElementById(id);
     if(!sel)return;
-    sel.innerHTML=anos.map(a=>`<option value="${a}"${a===S.ano?' selected':''}>${a}</option>`).join('');
+    sel.innerHTML=anos.map(a=>`<option value="${a}" style="background:#111128;color:#F0F0FF;font-weight:600"${a===S.ano?' selected':''}>${a}</option>`).join('');
   });
 }
 
