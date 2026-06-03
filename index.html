@@ -1384,7 +1384,10 @@ function renderHistorial(){
   const ft=document.getElementById('fTF')?.value||'';
   const fu=document.getElementById('fUF')?.value||'';
   const fb=document.getElementById('fBF')?.value||'';
-  let txs=[...S.tx].sort((a,b)=>(b.ts||0)-(a.ts||0));
+  // Filtrar por año seleccionado — igual que todos los demás campos
+  let txs=[...S.tx]
+    .filter(t=>parseInt(t.fecha?.slice(0,4)||t.codigo?.slice(0,4)||new Date().getFullYear())===S.ano)
+    .sort((a,b)=>(b.ts||0)-(a.ts||0));
   if(q)txs=txs.filter(t=>(t.concepto+' '+t.desc+' '+(t.codigo||'')+' '+(t._id||'')).toLowerCase().includes(q));
   if(fm)txs=txs.filter(t=>t.mes===fm);
   if(ft)txs=txs.filter(t=>t.tipo===ft);
