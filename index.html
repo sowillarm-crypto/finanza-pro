@@ -803,11 +803,11 @@ body{background:var(--bg);color:var(--t1);
       <div class="tab" id="tabMov" data-p="movimientos" onclick="goToMov()">
         <svg class="tab-svg" viewBox="0 0 24 24" fill="none" id="movTabIco">
           <!-- Flecha arriba (ingresos) — índigo por defecto -->
-          <polyline id="arrowUp" points="3 17 9 11 13 15 21 7" stroke="#818CF8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
-          <polyline id="arrowUpTip" points="15 7 21 7 21 13" stroke="#818CF8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+          <polyline id="arrowUp" points="3 17 9 11 13 15 21 7" stroke="#5858A0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+          <polyline id="arrowUpTip" points="15 7 21 7 21 13" stroke="#5858A0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
           <!-- Flecha abajo (egresos) — apagada por defecto -->
-          <polyline id="arrowDn" points="3 7 9 13 13 9 21 17" stroke="#5858A0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".3"/>
-          <polyline id="arrowDnTip" points="15 17 21 17 21 11" stroke="#5858A0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".3"/>
+          <polyline id="arrowDn" points="3 7 9 13 13 9 21 17" stroke="#5858A0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+          <polyline id="arrowDnTip" points="15 17 21 17 21 11" stroke="#5858A0" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
         </svg>
         <div class="tab-l" id="movTabLabel" style="color:var(--t3)">Ingresos</div>
       </div>
@@ -1132,9 +1132,9 @@ function updMovIcon(){
     const lbl=document.getElementById('movTabLabel');
     if(lbl){lbl.textContent=isIng?'Ingresos':'Egresos';lbl.style.color='var(--acc)';}
   } else {
-    // Tab inactivo: ambas flechas en gris apagado igual que los otros tabs
+    // Tab inactivo: mismo color que los otros tabs en espera (--t3 = #5858A0, opacity 1)
     [up1,up2,dn1,dn2].forEach(el=>{
-      if(el){el.setAttribute('stroke',OFF);el.setAttribute('opacity','0.45');}
+      if(el){el.setAttribute('stroke','#5858A0');el.setAttribute('opacity','1');}
     });
     const lbl=document.getElementById('movTabLabel');
     if(lbl){lbl.textContent='Movimientos';lbl.style.color='var(--t3)';}
