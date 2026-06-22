@@ -317,17 +317,17 @@ body{background:var(--bg);color:var(--t1);
 /* Mobile historial cells */
 .mob-grp{margin-bottom:14px}
 .mob-lbl{font-size:10px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.07em;padding:0 2px;margin-bottom:7px}
-.mob-cell{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:rgba(255,255,255,.04);border-radius:var(--r14);margin-bottom:5px;border:1px solid var(--br);transition:all var(--tr)}
+.mob-cell{display:flex;align-items:center;gap:10px;padding:12px 14px;background:rgba(255,255,255,.04);border-radius:var(--r14);margin-bottom:5px;border:1px solid var(--br);transition:all var(--tr)}
 .mob-cell.selected{background:rgba(99,102,241,.08);border-color:var(--acc)}
 .mob-av{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
 .mob-inf{flex:1;min-width:0}
 .mob-nm{font-size:13px;font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mob-meta{font-size:10.5px;color:var(--t3);margin-top:2px}
-.mob-rr{text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:1px}
-.mob-amt{font-size:14px;font-weight:700;letter-spacing:-.3px}
-.mob-inf{flex:1;min-width:0}
-.mob-nm{font-size:12.5px;font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.mob-meta{font-size:10px;color:var(--t3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mob-rr{text-align:right;flex-shrink:0}
+.mob-amt{font-size:14px;font-weight:800;letter-spacing:-.3px}
+.mob-cod{font-size:8.5px;color:var(--t4);font-family:monospace;margin-top:2px}
+.mob-actions{display:flex;flex-direction:column;gap:5px;flex-shrink:0;opacity:0;pointer-events:none;max-width:0;overflow:hidden;transition:opacity .2s,max-width .22s}
+.mob-cell.selected .mob-actions{opacity:1;pointer-events:auto;max-width:76px}
 .mob-edit{background:rgba(129,140,248,.12);border:1px solid rgba(129,140,248,.25);color:var(--acc);font-size:11px;font-weight:700;cursor:pointer;padding:6px 10px;border-radius:8px;white-space:nowrap;font-family:var(--ff);width:100%;text-align:center}
 .mob-del{background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.25);color:var(--red);font-size:11px;font-weight:700;cursor:pointer;padding:6px 10px;border-radius:8px;white-space:nowrap;font-family:var(--ff);width:100%;text-align:center}
 /* hist footer */
@@ -466,9 +466,6 @@ body{background:var(--bg);color:var(--t1);
 }
 
 /* ═══ SCROLLBAR ═══ */
-#scrollTopBtn.visible{display:flex!important;animation:fadeInUp .3s ease}
-@keyframes fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@media(min-width:641px){#scrollTopBtn{bottom:24px;right:24px;width:44px;height:44px}}
 ::-webkit-scrollbar{width:3px;height:3px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--s4);border-radius:3px}
@@ -516,43 +513,43 @@ body{background:var(--bg);color:var(--t1);
       <span class="sb-logo-txt">Finanza <span class="sb-pro">PRO</span></span>
     </div>
     <div class="sb-sec">Principal</div>
-    <div class="ni on" data-p="dashboard" role="button" aria-label="Dashboard" tabindex="0">
+    <div class="ni on" data-p="dashboard">
       <svg class="ni-ico" viewBox="0 0 24 24" fill="none" width="18" height="18"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7"/></svg>
       <span class="sb-label">Dashboard</span>
     </div>
-    <div class="ni" data-p="registro" role="button" aria-label="Nuevo registro" tabindex="0">
+    <div class="ni" data-p="registro">
       <svg class="ni-ico" viewBox="0 0 24 24" fill="none" width="18" height="18"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><line x1="12" y1="8" x2="12" y2="16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
       <span class="sb-label">Nuevo registro</span>
     </div>
-    <div class="ni" data-p="historial" role="button" aria-label="Historial" tabindex="0">
+    <div class="ni" data-p="historial">
       <svg class="ni-ico" viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><rect x="9" y="3" width="6" height="4" rx="1.5" stroke="currentColor" stroke-width="1.7"/><line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="9" y1="16" x2="13" y2="16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
       <span class="sb-label">Historial</span>
     </div>
     <div class="sb-sep"></div>
     <div class="sb-sec">Finanzas</div>
-    <div class="ni" data-p="ingresos" role="button" aria-label="Ingresos" tabindex="0">
+    <div class="ni" data-p="ingresos">
       <svg class="ni-ico" viewBox="0 0 24 24" fill="none" width="18" height="18"><polyline points="3 17 9 11 13 15 21 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="15 7 21 7 21 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="sb-label">Ingresos</span>
     </div>
-    <div class="ni" data-p="egresos" role="button" aria-label="Egresos" tabindex="0">
+    <div class="ni" data-p="egresos">
       <svg class="ni-ico" viewBox="0 0 24 24" fill="none" width="18" height="18"><polyline points="3 7 9 13 13 9 21 17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><polyline points="15 17 21 17 21 11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="sb-label">Egresos</span>
     </div>
-    <div class="ni" data-p="presupuesto" role="button" aria-label="Presupuesto" tabindex="0">
+    <div class="ni" data-p="presupuesto">
       <svg class="ni-ico" viewBox="0 0 24 24" fill="none" width="18" height="18"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
       <span class="sb-label">Presupuesto</span>
     </div>
     <div class="sb-sep"></div>
     <div class="sb-sec">Sistema</div>
-    <div class="ni" data-p="categorias" role="button" aria-label="Categorías" tabindex="0">
+    <div class="ni" data-p="categorias">
       <svg class="ni-ico" viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="7" r="1.5" fill="currentColor"/></svg>
       <span class="sb-label">Categorías</span>
     </div>
-    <div class="ni" data-p="estadocuenta" role="button" aria-label="Estado de cuenta" tabindex="0">
+    <div class="ni" data-p="estadocuenta">
       <svg class="ni-ico" viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="8" y1="17" x2="12" y2="17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
       <span class="sb-label">Estado de cuenta</span>
     </div>
-    <div class="ni" data-p="config" role="button" aria-label="Configuración" tabindex="0">
+    <div class="ni" data-p="config">
       <svg class="ni-ico" viewBox="0 0 24 24" fill="none" width="18" height="18"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="currentColor" stroke-width="1.7"/></svg>
       <span class="sb-label">Configuración</span>
     </div>
@@ -795,11 +792,11 @@ body{background:var(--bg);color:var(--t1);
 
     <!-- TABBAR (mobile) -->
     <nav class="tabbar">
-      <div class="tab on" data-p="dashboard" role="button" aria-label="Inicio" tabindex="0">
+      <div class="tab on" data-p="dashboard">
         <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7"/></svg>
         <div class="tab-l">Inicio</div>
       </div>
-      <div class="tab" data-p="registro" role="button" aria-label="Registrar" tabindex="0">
+      <div class="tab" data-p="registro">
         <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><line x1="12" y1="8" x2="12" y2="16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="8" y1="12" x2="16" y2="12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
         <div class="tab-l">Registrar</div>
       </div>
@@ -814,22 +811,17 @@ body{background:var(--bg);color:var(--t1);
         </svg>
         <div class="tab-l" id="movTabLabel" style="color:var(--t3)">Ingresos</div>
       </div>
-      <div class="tab" data-p="historial" role="button" aria-label="Historial" tabindex="0">
+      <div class="tab" data-p="historial">
         <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><rect x="9" y="3" width="6" height="4" rx="1.5" stroke="currentColor" stroke-width="1.7"/><line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="9" y1="16" x2="13" y2="16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
         <div class="tab-l">Historial</div>
       </div>
-      <div class="tab" data-p="estadocuenta" role="button" aria-label="Descargar PDF" tabindex="0">
+      <div class="tab" data-p="estadocuenta">
         <svg class="tab-svg" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M14 2v6h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><line x1="8" y1="17" x2="12" y2="17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
         <div class="tab-l">PDF</div>
       </div>
     </nav>
   </div><!-- /main -->
 </div><!-- /appShell -->
-
-<!-- BOTÓN VOLVER ARRIBA -->
-<button id="scrollTopBtn" onclick="scrollToTop()" aria-label="Volver arriba" style="position:fixed;bottom:calc(var(--tbh) + var(--safe-b) + 16px);right:14px;width:38px;height:38px;border-radius:50%;background:rgba(99,102,241,.9);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);color:#fff;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:150;transition:all .25s;box-shadow:0 4px 16px rgba(99,102,241,.3)">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
-</button>
 
 <!-- TOAST -->
 <div class="toast" id="toast"><span id="tIco">✓</span><span id="tMsg"></span></div>
@@ -886,16 +878,6 @@ const ICO={"Internet":"📡","Línea Móvil":"📱","Cuidado Personal":"🧴","G
 // ── State ──
 let anoActual=new Date().getFullYear();
 let S={tx:[],catE:[],catI:[],pres:{},cfg:{},mes:MESES[new Date().getMonth()],ano:new Date().getFullYear()};
-
-// ── PERSISTENCIA LOCAL ──
-function lsSet(k,v){try{localStorage.setItem('fpro_'+k,JSON.stringify(v))}catch(e){}}
-function lsGet(k,d){try{const v=localStorage.getItem('fpro_'+k);return v?JSON.parse(v):d}catch(e){return d}}
-
-// Restaurar último estado
-const savedMes=lsGet('mes',null);
-const savedAno=lsGet('ano',null);
-if(savedMes&&MESES.includes(savedMes))S.mes=savedMes;
-if(savedAno)S.ano=parseInt(savedAno);
 let currentUser=null,appReady=false,curPage='dashboard';
 let cA=null,cD=null,chartsReady=false;
 let unsubL=[],refreshTimer=null,tT=null,mCb=null,editId=null;
@@ -1039,7 +1021,6 @@ function initApp(){
   buildMonth();
   setupFormListeners();
   setupNavListeners();
-  setupScrollTopBtn();
   tryInitCharts();
   // Inicializar ícono del tab movimientos con estado correcto
   updMovIcon();
@@ -1127,7 +1108,6 @@ function buildAnoSelector(){
 
 function setAno(a){
   S.ano=parseInt(a);
-  lsSet('ano',S.ano);
   ['anoSel','anoSelMob'].forEach(id=>{const s=document.getElementById(id);if(s)s.value=a});
   renderPage(curPage);
   if(curPage==='dashboard')updCharts();
@@ -1195,12 +1175,11 @@ function renderMovimientos(){
   const list=document.getElementById('movList');
   if(!list)return;
   if(!txs.length){list.innerHTML=`<div style="text-align:center;padding:20px;color:var(--t3);font-size:12px">Sin ${isIng?'ingresos':'egresos'} en ${m}</div>`;return;}
-  list.innerHTML=txs.map(t=>`<div class="mob-cell" onclick="selCell(this)"><div class="mob-av" style="background:${isIng?'rgba(74,222,128,.1)':'rgba(248,113,113,.1)'};margin-top:2px">${ICO[t.concepto]||'💰'}</div><div class="mob-inf"><div class="mob-nm">${t.desc||t.concepto} ${userTag(t.user)}</div><div class="mob-meta">${t.concepto} · ${t.banco||'Efectivo'}</div><div style="font-size:9px;color:var(--t3);margin-top:2px">${t.fecha||''} · ${t.dia||''} · ${t.mes||''}</div><div style="font-size:8.5px;color:var(--t4);font-family:monospace;margin-top:1px">${t.codigo||codigoLeg(t)}</div></div><div class="mob-rr"><div class="mob-amt" style="color:${isIng?'var(--grn)':'var(--red)'}">${isIng?'+':'−'} ${fmt(t.monto)}</div></div><div class="mob-actions"><button class="mob-edit" onclick="abrirEditMob(this);event.stopPropagation()" data-id="${t._id}">✎ Editar</button><button class="mob-del" onclick="delTxMob(this);event.stopPropagation()" data-id="${t._id}">🗑 Eliminar</button></div></div>`).join('');
+  list.innerHTML=txs.map(t=>`<div class="mob-cell" onclick="selCell(this)"><div class="mob-av" style="background:${isIng?'rgba(74,222,128,.1)':'rgba(248,113,113,.1)'}">${ICO[t.concepto]||'💰'}</div><div class="mob-inf"><div class="mob-nm">${t.desc||t.concepto} ${userTag(t.user)}</div><div class="mob-meta">${t.concepto} · ${t.dia||''} · ${t.banco||''}</div></div><div class="mob-rr"><div class="mob-amt" style="color:${isIng?'var(--grn)':'var(--red)'}">${isIng?'+':'−'} ${fmt(t.monto)}</div><div class="mob-cod">${t.codigo||codigoLeg(t)}</div></div><div class="mob-actions"><button class="mob-edit" onclick="abrirEditMob(this);event.stopPropagation()" data-id="${t._id}">✎ Editar</button><button class="mob-del" onclick="delTxMob(this);event.stopPropagation()" data-id="${t._id}">🗑 Eliminar</button></div></div>`).join('');
 }
 
 function setMes(m){
   S.mes=m;
-  lsSet('mes',m);
   document.querySelectorAll('.mpill').forEach(p=>p.classList.toggle('on',p.textContent===m.slice(0,3)));
   const selMob=document.getElementById('mselMob');if(selMob)selMob.value=m;
   renderPage(curPage);
@@ -1295,7 +1274,7 @@ function renderDash(){
       <div class="tav ${t.tipo==='Egreso'?'e':'i'}">${ICO[t.concepto]||'💰'}</div>
       <div class="tinf"><div class="tnm">${t.desc||t.concepto} ${userTag(t.user)}</div><div class="tcat">${t.concepto} · ${t.dia||''}</div></div>
       <div class="trr"><div class="tamt ${t.tipo==='Egreso'?'e':'i'}">${t.tipo==='Egreso'?'−':'+'} ${fmt(t.monto)}</div><div class="tcod">${t.codigo||codigoLeg(t)}</div></div>
-    </div>`).join(''):`<div class="emp"><div class="emp-i">📭</div><p style="font-weight:600;color:var(--t2);margin-bottom:4px">Sin transacciones aún</p><p style="font-size:11px">Registra tu primer movimiento del mes</p><button onclick="goTo('registro')" style="margin-top:12px;padding:8px 16px;background:var(--acc);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--ff)">+ Nuevo registro</button></div>`;
+    </div>`).join(''):`<div class="emp"><div class="emp-i">📂</div><p>Sin transacciones recientes</p></div>`;
   // Progress
   const cg=catG(m);
   const pgCats=[...new Set([...Object.keys(S.pres),...Object.keys(cg)])].filter(c=>S.pres[c]?.[m]||cg[c]);
@@ -1359,21 +1338,11 @@ function registrar(){
   if(!conc){toast('Selecciona un concepto','err');return}
   if(!monto||monto<=0){toast('Ingresa un monto válido','err');return}
   if(!fecha){toast('Selecciona una fecha','err');return}
-  // Detectar duplicados: mismo tipo + concepto + monto + fecha
-  const dup=S.tx.find(t=>t.tipo===tipo&&t.concepto===conc&&Math.abs(parseFloat(t.monto)-monto)<0.01&&t.fecha===fecha);
-  if(dup){
-    showMod('⚠ Posible duplicado',`Ya existe un registro de ${tipo} de ${conc} por ${fmt(monto)} en la fecha ${fecha}. ¿Registrar de todos modos?`,()=>doRegistrar(tipo,conc,monto,fecha,banco,desc));
-    return;
-  }
   if(tipo==='Egreso'){
     const mes=getMes(fecha),bc=S.pres[conc]?.[mes]||0;
     const gc=txM(mes).filter(t=>t.tipo==='Egreso'&&t.concepto===conc).reduce((a,t)=>a+t.monto,0);
     if(bc>0&&gc+monto>bc){toast(`⚠ Supera presupuesto en ${conc} (disp: ${fmt(bc-gc)})`,'err');return}
   }
-  doRegistrar(tipo,conc,monto,fecha,banco,desc);
-}
-
-function doRegistrar(tipo,conc,monto,fecha,banco,desc){
   const mes=getMes(fecha);
   setSS('syncing');
   db.collection('transactions').add({
@@ -1445,7 +1414,15 @@ function renderHistorial(){
   if(mobEl)mobEl.innerHTML=Object.entries(groups).map(([mes,items])=>`
     <div class="mob-grp">
       <div class="mob-lbl">${mes}</div>
-      ${items.map(t=>buildMobCell(t,t.tipo==='Egreso'?'e':'i')).join('')}
+      ${items.map(t=>`<div class="mob-cell" onclick="selCell(this)">
+        <div class="mob-av ${t.tipo==='Egreso'?'e':'i'}" style="background:${t.tipo==='Egreso'?'rgba(248,113,113,.1)':'rgba(74,222,128,.1)'}">${ICO[t.concepto]||'💰'}</div>
+        <div class="mob-inf"><div class="mob-nm">${t.desc||t.concepto} ${userTag(t.user)}</div><div class="mob-meta">${t.concepto} · ${t.dia||''} · ${t.banco||''}</div></div>
+        <div class="mob-rr"><div class="mob-amt" style="color:${t.tipo==='Egreso'?'var(--red)':'var(--grn)'}">${t.tipo==='Egreso'?'−':'+'}${fmt(t.monto)}</div><div class="mob-cod">${t.codigo||codigoLeg(t)}</div></div>
+        <div class="mob-actions">
+          <button class="mob-edit" onclick="abrirEditMob(this);event.stopPropagation()" data-id="${t._id}">✎ Editar</button>
+          <button class="mob-del" onclick="delTxMob(this);event.stopPropagation()" data-id="${t._id}">🗑 Eliminar</button>
+        </div>
+      </div>`).join('')}
     </div>`).join('')||'<div class="emp"><div class="emp-i">📂</div><p>No hay registros con esos filtros</p></div>';
   // Footer totals
   const footer=document.getElementById('histFooter');
@@ -1461,58 +1438,6 @@ function renderHistorial(){
         <div style="padding-left:12px;border-left:1px solid var(--br)"><div style="font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em">Balance</div><div style="font-size:16px;font-weight:800;color:${totB>=0?'var(--grn)':'var(--red)'}">${totB>=0?'+':''}${fmt(totB)}</div></div>
       </div>`;
   } else if(footer){footer.style.display='none'}
-}
-
-
-// ── BUILD CELDA MÓVIL ACORDEÓN ──
-function buildMobCell(t,type){
-  const isE=type==='e';
-  const bg=isE?'rgba(248,113,113,.1)':'rgba(74,222,128,.1)';
-  const col=isE?'var(--red)':'var(--grn)';
-  const sign=isE?'−':'+';
-  const code=t.codigo||codigoLeg(t);
-  const desc=t.desc||'';
-  const fechaCompleta=`${t.fecha||'—'} · ${t.dia||'—'}`;
-  return `<div class="mob-cell" data-id="${t._id}">
-    <div class="mob-cell-main" onclick="toggleMobCell(this)">
-      <div class="mob-av" style="background:${bg}">${ICO[t.concepto]||'💰'}</div>
-      <div class="mob-inf">
-        <div class="mob-nm">${desc||t.concepto} ${userTag(t.user)}</div>
-        <div class="mob-meta">${t.concepto} · ${t.banco||'Efectivo'}</div>
-      </div>
-      <div class="mob-rr">
-        <div class="mob-amt" style="color:${col}">${sign} ${fmt(t.monto)}</div>
-        <div style="font-size:9px;color:var(--t3)">${t.mes||''}</div>
-      </div>
-      <div class="mob-chevron">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </div>
-    </div>
-    <div class="mob-detail">
-      <div class="mob-detail-inner">
-        ${desc?`<div class="mdrow"><span class="mdlbl">Descripción</span><span class="mdval">${desc}</span></div>`:''}
-        <div class="mdrow"><span class="mdlbl">Categoría</span><span class="mdval">${t.concepto}</span></div>
-        <div class="mdrow"><span class="mdlbl">Monto</span><span class="mdval" style="color:${col};font-weight:700">${sign} ${fmt(t.monto)}</span></div>
-        <div class="mdrow"><span class="mdlbl">Fecha</span><span class="mdval">${fechaCompleta}</span></div>
-        <div class="mdrow"><span class="mdlbl">Mes</span><span class="mdval">${t.mes||'—'}</span></div>
-        <div class="mdrow"><span class="mdlbl">Banco</span><span class="mdval">${t.banco||'Efectivo'}</span></div>
-        <div class="mdrow"><span class="mdlbl">Usuario</span><span class="mdval">${t.user||'—'}</span></div>
-        <div class="mdrow"><span class="mdlbl">Código</span><span class="mdval mdcode">${code}</span></div>
-        <div class="mob-detail-actions">
-          <button class="mob-edit-act" onclick="abrirEditMob(this);event.stopPropagation()" data-id="${t._id}">✎ Editar</button>
-          <button class="mob-del-act" onclick="delTxMob(this);event.stopPropagation()" data-id="${t._id}">🗑 Eliminar</button>
-        </div>
-      </div>
-    </div>
-  </div>`;
-}
-
-function toggleMobCell(mainEl){
-  const cell=mainEl.closest('.mob-cell');
-  const wasOpen=cell.classList.contains('open');
-  // Cerrar todas las demás
-  cell.parentNode.querySelectorAll('.mob-cell.open').forEach(c=>{if(c!==cell)c.classList.remove('open')});
-  cell.classList.toggle('open',!wasOpen);
 }
 
 function selCell(cell){
@@ -1568,7 +1493,6 @@ function closeEdit(){
 function guardarEdit(){
   if(!editId){toast('Error: sin ID de registro','err');return}
   const tx=S.tx.find(t=>t._id===editId);
-  if(!tx){toast('Registro no encontrado','err');return}
   const conc=document.getElementById('eConc').value;
   const monto=parseFloat(document.getElementById('eMonto').value);
   const fecha=document.getElementById('eFecha').value;
@@ -1577,19 +1501,6 @@ function guardarEdit(){
   if(!conc){toast('Selecciona un concepto','err');return}
   if(!monto||monto<=0){toast('Ingresa un monto válido','err');return}
   if(!fecha){toast('Selecciona una fecha','err');return}
-  // Detectar cambio significativo de monto (>50% de diferencia)
-  const montoOrig=parseFloat(tx.monto)||0;
-  const diff=Math.abs(monto-montoOrig);
-  const pctDiff=montoOrig>0?(diff/montoOrig)*100:0;
-  if(pctDiff>50&&diff>20){
-    const cb=mCb;
-    showMod('⚠ Cambio significativo de monto',`El monto cambia de ${fmt(montoOrig)} a ${fmt(monto)} (${Math.round(pctDiff)}% de diferencia). ¿Confirmar?`,()=>doSaveEdit(conc,monto,fecha,banco,desc,tx));
-    return;
-  }
-  doSaveEdit(conc,monto,fecha,banco,desc,tx);
-}
-
-function doSaveEdit(conc,monto,fecha,banco,desc,tx){
   const mes=getMes(fecha)||tx?.mes||S.mes;
   const dia=getDia(fecha);
   setSS('syncing');
@@ -1610,7 +1521,7 @@ function renderIngresos(){
     <div class="tx"><div class="tav i">${ICO[t.concepto]||'💰'}</div>
     <div class="tinf"><div class="tnm">${t.desc||t.concepto} ${userTag(t.user)}</div><div class="tcat">${t.concepto} · ${t.dia||''} · ${t.banco||''}</div></div>
     <div class="trr"><div class="tamt i">+ ${fmt(t.monto)}</div><div class="tcod">${t.codigo||codigoLeg(t)}</div></div>
-    </div>`).join(''):`<div class="emp"><div class="emp-i">💼</div><p style="font-weight:600;color:var(--t2);margin-bottom:4px">Sin ingresos en ${m}</p><p style="font-size:11px">Los ingresos aparecerán aquí cuando los registres</p></div>`;
+    </div>`).join(''):`<div class="emp"><div class="emp-i">💼</div><p>Sin ingresos en ${m}</p></div>`;
 }
 
 function renderEgresos(){
@@ -1622,7 +1533,7 @@ function renderEgresos(){
     <div class="tx"><div class="tav e">${ICO[t.concepto]||'💸'}</div>
     <div class="tinf"><div class="tnm">${t.desc||t.concepto} ${userTag(t.user)}</div><div class="tcat">${t.concepto} · ${t.dia||''} · ${t.banco||''}</div></div>
     <div class="trr"><div class="tamt e">− ${fmt(t.monto)}</div><div class="tcod">${t.codigo||codigoLeg(t)}</div></div>
-    </div>`).join(''):`<div class="emp"><div class="emp-i">💸</div><p style="font-weight:600;color:var(--t2);margin-bottom:4px">Sin egresos en ${m}</p><p style="font-size:11px">Los gastos aparecerán aquí cuando los registres</p></div>`;
+    </div>`).join(''):`<div class="emp"><div class="emp-i">💸</div><p>Sin egresos en ${m}</p></div>`;
 }
 
 // ── Presupuesto ──
@@ -2007,53 +1918,6 @@ if('serviceWorker' in navigator){
     regs.forEach(r=>r.unregister());
   });
 }
-
-// ── BOTÓN VOLVER ARRIBA ──
-function scrollToTop(){
-  const pg=document.getElementById('page-'+curPage);
-  if(pg)pg.scrollTo({top:0,behavior:'smooth'});
-}
-
-function setupScrollTopBtn(){
-  const btn=document.getElementById('scrollTopBtn');
-  if(!btn)return;
-  document.querySelectorAll('.page').forEach(pg=>{
-    pg.addEventListener('scroll',()=>{
-      if(pg.classList.contains('on')){
-        btn.classList.toggle('visible',pg.scrollTop>300);
-      }
-    });
-  });
-}
-
-// ── RESIZE LISTENER ──
-let rT;
-window.addEventListener('resize',()=>{
-  clearTimeout(rT);rT=setTimeout(()=>{
-    if(curPage==='historial')renderHistorial();
-    if(curPage==='dashboard'){if(cA)cA.resize();if(cD)cD.resize();}
-  },200);
-});
-
-// ── ATAJOS DE TECLADO (desktop) ──
-document.addEventListener('keydown',e=>{
-  if(window.innerWidth<=640)return;
-  if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;
-  if(e.ctrlKey||e.metaKey){
-    if(e.key==='n'||e.key==='N'){e.preventDefault();goTo('registro')}
-    else if(e.key==='h'||e.key==='H'){e.preventDefault();goTo('historial')}
-    else if(e.key==='d'||e.key==='D'){e.preventDefault();goTo('dashboard')}
-    else if(e.key==='/'){
-      e.preventDefault();
-      goTo('historial');
-      setTimeout(()=>{const f=document.getElementById('fSearch');if(f)f.focus()},200);
-    }
-  }
-  if(e.key==='Escape'){
-    document.querySelectorAll('.mov.open').forEach(m=>m.classList.remove('open'));
-    document.querySelectorAll('.mob-cell.open').forEach(c=>c.classList.remove('open'));
-  }
-});
 </script>
 </body>
 </html>
