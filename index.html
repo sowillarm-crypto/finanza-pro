@@ -317,7 +317,7 @@ body{background:var(--bg);color:var(--t1);
 /* Mobile historial cells */
 .mob-grp{margin-bottom:14px}
 .mob-lbl{font-size:10px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.07em;padding:0 2px;margin-bottom:7px}
-.mob-cell{display:flex;align-items:center;gap:10px;padding:12px 14px;background:rgba(255,255,255,.04);border-radius:var(--r14);margin-bottom:5px;border:1px solid var(--br);transition:all var(--tr)}
+.mob-cell{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:rgba(255,255,255,.04);border-radius:var(--r14);margin-bottom:5px;border:1px solid var(--br);transition:all var(--tr)}
 .mob-cell.selected{background:rgba(99,102,241,.08);border-color:var(--acc)}
 .mob-av{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
 .mob-inf{flex:1;min-width:0}
@@ -1175,7 +1175,7 @@ function renderMovimientos(){
   const list=document.getElementById('movList');
   if(!list)return;
   if(!txs.length){list.innerHTML=`<div style="text-align:center;padding:20px;color:var(--t3);font-size:12px">Sin ${isIng?'ingresos':'egresos'} en ${m}</div>`;return;}
-  list.innerHTML=txs.map(t=>`<div class="mob-cell" onclick="selCell(this)"><div class="mob-av" style="background:${isIng?'rgba(74,222,128,.1)':'rgba(248,113,113,.1)'}">${ICO[t.concepto]||'💰'}</div><div class="mob-inf"><div class="mob-nm">${t.desc||t.concepto} ${userTag(t.user)}</div><div class="mob-meta">${t.concepto} · ${t.dia||''} · ${t.banco||''}</div></div><div class="mob-rr"><div class="mob-amt" style="color:${isIng?'var(--grn)':'var(--red)'}">${isIng?'+':'−'} ${fmt(t.monto)}</div><div class="mob-cod">${t.codigo||codigoLeg(t)}</div></div><div class="mob-actions"><button class="mob-edit" onclick="abrirEditMob(this);event.stopPropagation()" data-id="${t._id}">✎ Editar</button><button class="mob-del" onclick="delTxMob(this);event.stopPropagation()" data-id="${t._id}">🗑 Eliminar</button></div></div>`).join('');
+  list.innerHTML=txs.map(t=>`<div class="mob-cell" onclick="selCell(this)"><div class="mob-av" style="background:${isIng?'rgba(74,222,128,.1)':'rgba(248,113,113,.1)'};margin-top:2px">${ICO[t.concepto]||'💰'}</div><div class="mob-inf"><div class="mob-nm">${t.desc||t.concepto} ${userTag(t.user)}</div><div class="mob-meta">${t.concepto} · ${t.banco||'Efectivo'}</div><div style="font-size:9px;color:var(--t3);margin-top:2px">${t.fecha||''} · ${t.dia||''} · ${t.mes||''}</div><div style="font-size:8.5px;color:var(--t4);font-family:monospace;margin-top:1px">${t.codigo||codigoLeg(t)}</div></div><div class="mob-rr"><div class="mob-amt" style="color:${isIng?'var(--grn)':'var(--red)'}">${isIng?'+':'−'} ${fmt(t.monto)}</div></div><div class="mob-actions"><button class="mob-edit" onclick="abrirEditMob(this);event.stopPropagation()" data-id="${t._id}">✎ Editar</button><button class="mob-del" onclick="delTxMob(this);event.stopPropagation()" data-id="${t._id}">🗑 Eliminar</button></div></div>`).join('');
 }
 
 function setMes(m){
