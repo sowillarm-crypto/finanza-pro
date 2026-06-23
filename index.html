@@ -243,7 +243,7 @@ body{background:var(--bg);color:var(--t1);
 .tamt{font-size:13px;font-weight:800;letter-spacing:-.3px}
 .tamt.e{color:var(--red)}.tamt.i{color:var(--grn)}
 .tcod{font-size:9px;color:var(--t4);font-family:monospace;margin-top:2px}
-.utag{font-size:9px;padding:1px 6px;border-radius:4px;font-weight:700;margin-left:4px;display:inline-block;vertical-align:middle}
+.utag{font-size:9px;padding:1px 6px;border-radius:4px;font-weight:700;margin-left:4px;display:inline-block;vertical-align:middle;white-space:nowrap}
 .utag-e{background:rgba(129,140,248,.15);color:var(--acc2)}
 .utag-v{background:rgba(74,222,128,.15);color:var(--grn)}
 
@@ -1498,7 +1498,7 @@ function renderHistorial(){
     <td class="${t.tipo==='Ingreso'?'ci':'ce'}" style="white-space:nowrap">${t.tipo==='Ingreso'?'+':'−'} ${fmt(t.monto)}</td>
     <td style="color:var(--t3);white-space:nowrap">${t.fecha||'—'}</td>
     <td style="color:var(--t3);white-space:nowrap">${t.banco||'—'}</td>
-    <td>${userTag(t.user)}</td>
+    <td style="white-space:nowrap">${userTag(t.user)}</td>
     <td class="tbl-menu" id="tm_${t._id}">
       <button class="tbl-menu-btn" onclick="toggleTblMenu('tm_${t._id}')">···</button>
       <div class="tbl-dropdown">
