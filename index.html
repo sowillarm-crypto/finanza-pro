@@ -293,12 +293,35 @@ body{background:var(--bg);color:var(--t1);
 .post-reg{display:none;flex-direction:row;gap:8px;margin-top:4px}
 
 /* ═══ HISTORIAL ═══ */
-.fb{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.fb input{flex:2;min-width:160px;background:rgba(255,255,255,.05);border:1px solid var(--brm);border-radius:var(--r10);padding:9px 13px;font-size:12.5px;color:var(--t1);font-family:var(--ff);outline:none}
-.fb input:focus{border-color:var(--acc)}
-.fb select{flex:1;min-width:120px;background:rgba(255,255,255,.05);border:1px solid var(--brm);border-radius:var(--r10);padding:9px 10px;font-size:12.5px;color:var(--t1);font-family:var(--ff);outline:none;-webkit-appearance:none}
-.fb select:focus{border-color:var(--acc)}
-.fb select option{background:#1a1a35}
+/* ── FILTRO B: búsqueda + drawer ── */
+.fb{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.fb-row{display:flex;gap:8px;align-items:center}
+.fb-search{flex:1;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid var(--brm);border-radius:var(--r10);padding:9px 13px}
+.fb-search input{background:none;border:none;outline:none;font-size:13px;color:var(--t1);font-family:var(--ff);flex:1;width:100%}
+.fb-search input::placeholder{color:var(--t3)}
+.fb-search svg{color:var(--t3);flex-shrink:0}
+.fb-filter-btn{display:flex;align-items:center;gap:6px;padding:9px 14px;border-radius:var(--r10);background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.2);color:var(--acc2);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--ff);white-space:nowrap;transition:all var(--tr);flex-shrink:0}
+.fb-filter-btn:hover{background:rgba(129,140,248,.18)}
+.fb-badge{min-width:17px;height:17px;border-radius:9px;background:var(--acc);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px}
+.fb-badge.hidden{display:none}
+.fb-drawer{display:none;background:rgba(15,15,35,.96);border:1px solid rgba(129,140,248,.15);border-radius:var(--r14);padding:14px;gap:10px}
+.fb-drawer.open{display:grid;grid-template-columns:1fr 1fr}
+.fb-drawer .fi label{font-size:9.5px;font-weight:700;color:var(--t3);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;display:block}
+.fb-drawer select{background:rgba(255,255,255,.06);border:1px solid var(--brm);border-radius:var(--r8);padding:8px 10px;font-size:12px;color:var(--t1);font-family:var(--ff);outline:none;-webkit-appearance:none;width:100%;transition:border-color var(--tr)}
+.fb-drawer select:focus{border-color:var(--acc)}
+.fb-drawer select option{background:#1a1a35}
+/* ── MENÚ ⋯ tabla ── */
+.tbl-menu{position:relative;text-align:right}
+.tbl-menu-btn{background:none;border:1px solid rgba(130,120,255,.12);border-radius:7px;color:var(--t3);cursor:pointer;padding:4px 10px;font-size:16px;line-height:1;transition:all var(--tr);font-family:var(--ff);letter-spacing:.05em}
+.tbl-menu-btn:hover{background:rgba(255,255,255,.06);color:var(--t2);border-color:rgba(130,120,255,.3)}
+.tbl-dropdown{display:none;position:absolute;right:0;top:calc(100% + 4px);background:rgba(20,20,50,.97);border:1px solid rgba(129,140,248,.18);border-radius:var(--r12);overflow:hidden;z-index:300;min-width:155px;box-shadow:0 8px 24px rgba(0,0,0,.55)}
+.tbl-menu.open .tbl-dropdown{display:block}
+.tbl-dd-item{display:flex;align-items:center;gap:9px;padding:10px 14px;font-size:12.5px;cursor:pointer;transition:background .12s;white-space:nowrap;font-weight:500}
+.tbl-dd-edit{color:var(--acc2)}
+.tbl-dd-edit:hover{background:rgba(129,140,248,.12)}
+.tbl-dd-sep{height:.5px;background:rgba(130,120,255,.1)}
+.tbl-dd-del{color:var(--red)}
+.tbl-dd-del:hover{background:rgba(248,113,113,.08)}
 /* Desktop historial table */
 .tbl-wrap{overflow-x:auto}
 .tbl{width:100%;border-collapse:collapse;font-size:12px}
@@ -690,11 +713,23 @@ body{background:var(--bg);color:var(--t1);
         <div class="card">
           <div class="chd"><span class="ct">Historial de registros</span><span class="cp" id="histPill">0 reg.</span></div>
           <div class="fb">
-            <input type="text" id="fSearch" placeholder="Buscar concepto, descripción..." autocomplete="off">
-            <select id="fMF"><option value="">Todos los meses</option></select>
-            <select id="fTF"><option value="">Ingreso + Egreso</option><option value="Ingreso">Solo ingresos</option><option value="Egreso">Solo egresos</option></select>
-            <select id="fUF"><option value="">Todos los usuarios</option><option value="Erick">Solo Erick</option><option value="Verónica">Solo Verónica</option></select>
-            <select id="fBF"><option value="">Todos los bancos</option><option>Efectivo</option><option>BCP</option><option>Interbank</option><option>BBVA</option><option>Scotiabank</option><option>Yape</option><option>Plin</option><option>Nación</option></select>
+            <div class="fb-row">
+              <div class="fb-search">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="fSearch" placeholder="Buscar concepto, descripción, código..." autocomplete="off">
+              </div>
+              <button class="fb-filter-btn" onclick="toggleFbDrawer()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="10" y1="18" x2="14" y2="18"/></svg>
+                Filtros
+                <div class="fb-badge hidden" id="fbBadge">0</div>
+              </button>
+            </div>
+            <div class="fb-drawer" id="fbDrawer">
+              <div class="fi"><label>Mes</label><select id="fMF"><option value="">Todos los meses</option></select></div>
+              <div class="fi"><label>Tipo</label><select id="fTF"><option value="">Ing + Egreso</option><option value="Ingreso">Solo ingresos</option><option value="Egreso">Solo egresos</option></select></div>
+              <div class="fi"><label>Usuario</label><select id="fUF"><option value="">Todos</option><option value="Erick">Erick</option><option value="Verónica">Verónica</option></select></div>
+              <div class="fi"><label>Banco</label><select id="fBF"><option value="">Todos los bancos</option><option>Efectivo</option><option>BCP</option><option>Interbank</option><option>BBVA</option><option>Scotiabank</option><option>Yape</option><option>Plin</option><option>Nación</option></select></div>
+            </div>
           </div>
           <!-- Desktop table -->
           <div class="tbl-wrap hm">
@@ -1428,7 +1463,10 @@ function limpiar(){
 function renderHistorial(){
   ['fSearch','fMF','fTF','fUF','fBF'].forEach(id=>{
     const el=document.getElementById(id);
-    if(el&&!el._fpro){el.addEventListener(id==='fSearch'?'input':'change',renderHistorial);el._fpro=true}
+    if(el&&!el._fpro){
+      el.addEventListener(id==='fSearch'?'input':'change',()=>{renderHistorial();updFbBadge();});
+      el._fpro=true;
+    }
   });
   // Populate month filter
   const fmf=document.getElementById('fMF');
@@ -1453,15 +1491,27 @@ function renderHistorial(){
   // Desktop table
   const tbody=document.getElementById('histBody');
   if(tbody)tbody.innerHTML=txs.map(t=>`<tr>
-    <td style="font-family:monospace;font-size:10px;color:var(--t4)">${t.codigo||codigoLeg(t)}</td>
-    <td><span style="font-size:10px;padding:2px 7px;border-radius:5px;font-weight:700;background:${t.tipo==='Ingreso'?'rgba(74,222,128,.1)':'rgba(248,113,113,.1)'};color:${t.tipo==='Ingreso'?'var(--grn)':'var(--red)'}">${t.tipo}</span></td>
-    <td style="font-weight:600;color:var(--t1)">${t.concepto}</td>
-    <td style="color:var(--t3)">${t.desc||'—'}</td>
-    <td class="${t.tipo==='Ingreso'?'ci':'ce'}">${t.tipo==='Ingreso'?'+':'−'} ${fmt(t.monto)}</td>
-    <td>${t.fecha||'—'}</td>
-    <td>${t.banco||'—'}</td>
+    <td><span style="font-size:10px;padding:2px 8px;border-radius:5px;font-weight:700;background:${t.tipo==='Ingreso'?'rgba(74,222,128,.1)':'rgba(248,113,113,.1)'};color:${t.tipo==='Ingreso'?'var(--grn)':'var(--red)'}">${t.tipo}</span></td>
+    <td style="font-weight:600;color:var(--t1);max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.concepto}</td>
+    <td style="color:var(--t2);max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.desc||'—'}</td>
+    <td class="${t.tipo==='Ingreso'?'ci':'ce'}" style="white-space:nowrap">${t.tipo==='Ingreso'?'+':'−'} ${fmt(t.monto)}</td>
+    <td style="color:var(--t3);white-space:nowrap">${t.fecha||'—'}</td>
+    <td style="color:var(--t3);white-space:nowrap">${t.banco||'—'}</td>
     <td>${userTag(t.user)}</td>
-    <td style="white-space:nowrap"><button class="db-edit" onclick="abrirEdit(this)" data-id="${t._id}" title="Editar">✎</button><button class="db" onclick="delTxDesk(this)" data-id="${t._id}" title="Eliminar">✕</button></td>
+    <td class="tbl-menu" id="tm_${t._id}">
+      <button class="tbl-menu-btn" onclick="toggleTblMenu('tm_${t._id}')">···</button>
+      <div class="tbl-dropdown">
+        <div class="tbl-dd-item tbl-dd-edit" onclick="abrirEditFromMenu('${t._id}')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Editar registro
+        </div>
+        <div class="tbl-dd-sep"></div>
+        <div class="tbl-dd-item tbl-dd-del" onclick="delFromMenu('${t._id}')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+          Eliminar registro
+        </div>
+      </div>
+    </td>
   </tr>`).join('');
   // Mobile cards
   const groups={};
@@ -1824,16 +1874,23 @@ function generarPDF(){
     y=secTitle('INGRESOS DEL MES',y);
     doc.autoTable({
       startY:y,
-      head:[['Código','Fecha','Fuente / Concepto','Descripción','Banco','Usuario','Monto']],
-      body:ingTx.map(t=>[t.codigo||codigoLeg(t),t.fecha||'',t.concepto,t.desc||'—',t.banco||'—',t.user||'—',pf(t.monto)]),
+      head:[['Fecha','Fuente / Concepto','Descripción','Banco','Usuario','Monto']],
+      body:ingTx.map(t=>[t.fecha||'',t.concepto,t.desc||'—',t.banco||'—',t.user||'—',pf(t.monto)]),
       theme:'plain',
-      styles:{fontSize:8,cellPadding:{top:2.8,bottom:2.8,left:3,right:3},textColor:[30,30,50],lineColor:[210,210,225],lineWidth:.3,font:'helvetica'},
-      headStyles:{fillColor:[99,102,241],textColor:[255,255,255],fontSize:7.5,fontStyle:'bold',cellPadding:{top:3.5,bottom:3.5,left:3,right:3}},
+      styles:{fontSize:8,cellPadding:{top:3,bottom:3,left:3,right:3},textColor:[30,30,50],lineColor:[210,210,225],lineWidth:.3,font:'helvetica',valign:'middle'},
+      headStyles:{fillColor:[99,102,241],textColor:[255,255,255],fontSize:7.5,fontStyle:'bold',cellPadding:{top:4,bottom:4,left:3,right:3},valign:'middle'},
       alternateRowStyles:{fillColor:[248,248,252]},
       bodyStyles:{fillColor:[255,255,255]},
-      columnStyles:{0:{cellWidth:28,textColor:[99,102,241],fontSize:7.5,fontStyle:'bold'},1:{cellWidth:20},2:{cellWidth:'auto',fontStyle:'bold',textColor:[20,20,40]},3:{cellWidth:32},4:{cellWidth:18},5:{cellWidth:16},6:{cellWidth:26,halign:'right',fontStyle:'bold',textColor:[22,163,74]}},
+      columnStyles:{
+        0:{cellWidth:22,textColor:[80,80,120]},
+        1:{cellWidth:36,fontStyle:'bold',textColor:[20,20,40]},
+        2:{cellWidth:'auto',textColor:[60,60,80]},
+        3:{cellWidth:20,textColor:[80,80,120]},
+        4:{cellWidth:16,textColor:[80,80,120]},
+        5:{cellWidth:26,halign:'right',fontStyle:'bold',textColor:[22,163,74]}
+      },
       margin:{left:PL,right:PR},
-      foot:[['','','','','','TOTAL',pf(ing)]],
+      foot:[['','','','','TOTAL',pf(ing)]],
       footStyles:{fillColor:[240,253,244],textColor:[22,163,74],fontStyle:'bold',fontSize:9,halign:'right'},
     });
     y=doc.lastAutoTable.finalY+6;
@@ -1845,16 +1902,23 @@ function generarPDF(){
     y=secTitle('EGRESOS DEL MES',y);
     doc.autoTable({
       startY:y,
-      head:[['Código','Fecha','Categoría','Descripción','Banco','Usuario','Monto']],
-      body:gstTx.map(t=>[t.codigo||codigoLeg(t),t.fecha||'',t.concepto,t.desc||'—',t.banco||'—',t.user||'—',pf(t.monto)]),
+      head:[['Fecha','Categoría','Descripción','Banco','Usuario','Monto']],
+      body:gstTx.map(t=>[t.fecha||'',t.concepto,t.desc||'—',t.banco||'—',t.user||'—',pf(t.monto)]),
       theme:'plain',
-      styles:{fontSize:8,cellPadding:{top:2.8,bottom:2.8,left:3,right:3},textColor:[30,30,50],lineColor:[210,210,225],lineWidth:.3,font:'helvetica'},
-      headStyles:{fillColor:[220,38,38],textColor:[255,255,255],fontSize:7.5,fontStyle:'bold',cellPadding:{top:3.5,bottom:3.5,left:3,right:3}},
+      styles:{fontSize:8,cellPadding:{top:3,bottom:3,left:3,right:3},textColor:[30,30,50],lineColor:[210,210,225],lineWidth:.3,valign:'middle'},
+      headStyles:{fillColor:[220,38,38],textColor:[255,255,255],fontSize:7.5,fontStyle:'bold',cellPadding:{top:4,bottom:4,left:3,right:3},valign:'middle'},
       alternateRowStyles:{fillColor:[255,248,248]},
       bodyStyles:{fillColor:[255,255,255]},
-      columnStyles:{0:{cellWidth:28,textColor:[99,102,241],fontSize:7.5,fontStyle:'bold'},1:{cellWidth:20},2:{cellWidth:'auto',fontStyle:'bold',textColor:[20,20,40]},3:{cellWidth:32},4:{cellWidth:18},5:{cellWidth:16},6:{cellWidth:26,halign:'right',fontStyle:'bold',textColor:[185,28,28]}},
+      columnStyles:{
+        0:{cellWidth:22,textColor:[80,80,120]},
+        1:{cellWidth:36,fontStyle:'bold',textColor:[20,20,40]},
+        2:{cellWidth:'auto',textColor:[60,60,80]},
+        3:{cellWidth:20,textColor:[80,80,120]},
+        4:{cellWidth:16,textColor:[80,80,120]},
+        5:{cellWidth:26,halign:'right',fontStyle:'bold',textColor:[185,28,28]}
+      },
       margin:{left:PL,right:PR},
-      foot:[['','','','','','TOTAL',pf(gst)]],
+      foot:[['','','','','TOTAL',pf(gst)]],
       footStyles:{fillColor:[255,241,241],textColor:[185,28,28],fontStyle:'bold',fontSize:9,halign:'right'},
     });
     y=doc.lastAutoTable.finalY+6;
@@ -2022,6 +2086,62 @@ function paso4Borrar(){
   },50);
 }
 function confirmBorrar(){paso1Borrar();}
+
+// ── FILTRO B: DRAWER ──
+function toggleFbDrawer(){
+  const drawer=document.getElementById('fbDrawer');
+  if(drawer)drawer.classList.toggle('open');
+  updFbBadge();
+}
+
+function updFbBadge(){
+  const vals=[
+    document.getElementById('fMF')?.value,
+    document.getElementById('fTF')?.value,
+    document.getElementById('fUF')?.value,
+    document.getElementById('fBF')?.value,
+  ];
+  const active=vals.filter(v=>v&&v!=='').length;
+  const badge=document.getElementById('fbBadge');
+  if(badge){
+    badge.textContent=active;
+    badge.classList.toggle('hidden',active===0);
+  }
+}
+
+// ── MENÚ ⋯ TABLA ──
+function toggleTblMenu(id){
+  // Cerrar todos los demás
+  document.querySelectorAll('.tbl-menu.open').forEach(m=>{if(m.id!==id)m.classList.remove('open')});
+  const el=document.getElementById(id);
+  if(el)el.classList.toggle('open');
+}
+
+function abrirEditFromMenu(id){
+  document.querySelectorAll('.tbl-menu.open').forEach(m=>m.classList.remove('open'));
+  const tx=S.tx.find(t=>t._id===id);
+  if(!tx)return;
+  _abrirEditModal(tx);
+}
+
+function delFromMenu(id){
+  document.querySelectorAll('.tbl-menu.open').forEach(m=>m.classList.remove('open'));
+  const tx=S.tx.find(t=>t._id===id);
+  if(!tx)return;
+  showMod('Eliminar registro',`${tx.tipo}: ${tx.concepto} · ${fmt(tx.monto)} · ${tx.fecha}`,()=>{
+    setSS('syncing');
+    db.collection('transactions').doc(id).delete()
+      .then(()=>toast('✓ Registro eliminado'))
+      .catch(()=>{toast('Error al eliminar','err');setSS('offline')});
+  });
+}
+
+// Cerrar menú al hacer click fuera
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.tbl-menu')){
+    document.querySelectorAll('.tbl-menu.open').forEach(m=>m.classList.remove('open'));
+  }
+});
 
 // ── PWA Service Worker ──
 // Service Worker deshabilitado para evitar conflictos de caché
